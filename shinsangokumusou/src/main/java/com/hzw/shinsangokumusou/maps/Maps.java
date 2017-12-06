@@ -18,6 +18,7 @@ import com.hzw.shinsangokumusou.chess.Chess;
 import com.hzw.shinsangokumusou.chess.General;
 import com.hzw.shinsangokumusou.chess.Player;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
+import com.hzw.shinsangokumusou.utils.ToastUtil;
 
 public class Maps extends AppCompatActivity {
 
@@ -69,14 +70,12 @@ public class Maps extends AppCompatActivity {
 
                     case MotionEvent.ACTION_UP:
                         mapview.performClick();
-                        Toast.makeText(Maps.this,
-                                "点击位置: X:" + motionEvent.getX() + ", Y: " + motionEvent.getY() +
-                                        "\n数组位置： (" + GetPosition(motionEvent.getX() - 1) + " , " + GetPosition(motionEvent.getY() - 1) + ")" +
-                                        "\n倍数： " + multiple +
-                                        "\n该位置参数： " + maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1], Toast.LENGTH_SHORT)
-                                .show();
+                        ToastUtil.X4(Maps.this,
+                                "", ToastUtil.X_Y("点击", motionEvent.getX(), motionEvent.getY()),
+                                "", ToastUtil.X_Y("数组", GetPosition(motionEvent.getX() - 1), GetPosition(motionEvent.getY())),
+                                "倍数:   ", multiple,
+                                "该位置参数:   ", maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1]);
                         break;
-
 
                     case MotionEvent.ACTION_DOWN:
                         mapview.performClick();
@@ -93,20 +92,20 @@ public class Maps extends AppCompatActivity {
                                 oldDist = newDist;
                                 multiple *= 2;
                                 if (multiple >= 1 && multiple <=8){
-                                    Log.d("ppp", "倍数： "+multiple);
+                                    LogUtil.d("ppp", "倍数： "+multiple);
                                     SET(mapview, chessview, multiple);
                                 }else {
-                                    Log.d("xxx", "onTouch: ");
+                                    LogUtil.d("xxx", "onTouch: ");
                                 }
                             }
                             if (newDist < oldDist - 1) {
                                 oldDist = newDist;
                                 multiple /= 2;
                                 if (multiple >= 1 && multiple <=8){
-                                    Log.d("ppp", "倍数： "+multiple);
+                                    LogUtil.d("ppp", "倍数： "+multiple);
                                     SET(mapview, chessview, multiple);
                                 }else {
-                                    Log.d("xxx", "onTouch: ");
+                                    LogUtil.d("xxx", "onTouch: ");
                                 }
                             }
                         }
@@ -159,6 +158,7 @@ public class Maps extends AppCompatActivity {
 
     }
 
+    // TODO: 2017/12/7 1:56 优化maps代码结构
     public void SET(HJmap mapview, Chess chess, float multiple) {
         MapsValue.setMap_width((int) (1080 * multiple));
         MapsValue.setMap_height((int) (1350 * multiple));

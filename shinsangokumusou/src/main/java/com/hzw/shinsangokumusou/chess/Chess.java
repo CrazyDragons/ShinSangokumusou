@@ -46,4 +46,6 @@ public  class Chess extends View {
         setPivotX(-MapsValue.Eachmap * (X - 1));
         setPivotY(-MapsValue.Eachmap * (Y - 1));
     }
+
+    // TODO: 2017/12/7 1:57 添加点击闪烁，移动，修改二维数组功能
 }
