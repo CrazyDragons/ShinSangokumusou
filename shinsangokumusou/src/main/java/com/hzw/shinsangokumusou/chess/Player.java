@@ -22,12 +22,6 @@ public class Player extends Chess {
     }
 
     @Override
-    public void SetPosition(int X, int Y) {
-        setTranslationX((float)X);
-        setTranslationY((float)Y);
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 

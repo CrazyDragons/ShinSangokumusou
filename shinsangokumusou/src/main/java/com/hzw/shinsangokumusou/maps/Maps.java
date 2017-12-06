@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.hzw.shinsangokumusou.R;
+import com.hzw.shinsangokumusou.chess.Chess;
 import com.hzw.shinsangokumusou.chess.General;
 import com.hzw.shinsangokumusou.chess.Player;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
@@ -31,7 +32,7 @@ public class Maps extends AppCompatActivity {
     private SeekBar seekBar;
     private float oldDist;
     private int TouthCnt;
-    private float newmultiple = 1;
+    private float multiple = 1;
     private Handler handler;
     private int[][] maps;
 
@@ -53,8 +54,7 @@ public class Maps extends AppCompatActivity {
         mapview.setBackgroundColor(MapsValue.Ground);
         chessview = new General(this);
         playerview = new Player(this);
-        playerview.SetPosition(200, 0);
-        SET(mapview, playerview, newmultiple);
+        SET(mapview, playerview, multiple);
         mapRL = (RelativeLayout) findViewById(R.id.mapview);
         mapRL.addView(mapview);
 //        mapRL.addView(chessview);
@@ -72,7 +72,7 @@ public class Maps extends AppCompatActivity {
                         Toast.makeText(Maps.this,
                                 "点击位置: X:" + motionEvent.getX() + ", Y: " + motionEvent.getY() +
                                         "\n数组位置： (" + GetPosition(motionEvent.getX() - 1) + " , " + GetPosition(motionEvent.getY() - 1) + ")" +
-                                        "\n倍数： " + newmultiple +
+                                        "\n倍数： " + multiple +
                                         "\n该位置参数： " + maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1], Toast.LENGTH_SHORT)
                                 .show();
                         break;
@@ -91,20 +91,20 @@ public class Maps extends AppCompatActivity {
                             float newDist = spacing(motionEvent);
                             if (newDist > oldDist + 1) {
                                 oldDist = newDist;
-                                newmultiple *= 2;
-                                if (newmultiple >= 1 && newmultiple <=8){
-                                    Log.d("ppp", "倍数： "+newmultiple);
-                                    SET(mapview, chessview, newmultiple);
+                                multiple *= 2;
+                                if (multiple >= 1 && multiple <=8){
+                                    Log.d("ppp", "倍数： "+multiple);
+                                    SET(mapview, chessview, multiple);
                                 }else {
                                     Log.d("xxx", "onTouch: ");
                                 }
                             }
                             if (newDist < oldDist - 1) {
                                 oldDist = newDist;
-                                newmultiple /= 2;
-                                if (newmultiple >= 1 && newmultiple <=8){
-                                    Log.d("ppp", "倍数： "+newmultiple);
-                                    SET(mapview, chessview, newmultiple);
+                                multiple /= 2;
+                                if (multiple >= 1 && multiple <=8){
+                                    Log.d("ppp", "倍数： "+multiple);
+                                    SET(mapview, chessview, multiple);
                                 }else {
                                     Log.d("xxx", "onTouch: ");
                                 }
@@ -123,8 +123,8 @@ public class Maps extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                newmultiple = 1 + 0.07f * i;
-                SET(mapview, playerview, newmultiple);
+                multiple = 1 + 0.07f * i;
+                SET(mapview, playerview, multiple);
             }
 
             @Override
@@ -143,7 +143,7 @@ public class Maps extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SET(mapview, playerview, 1f);
-                newmultiple = 1;
+                multiple = 1;
             }
         });
 
@@ -153,30 +153,28 @@ public class Maps extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SET(mapview, playerview, 8f);
-                newmultiple = 8;
+                multiple = 8;
             }
         });
 
     }
 
-    public void SET(HJmap mapview, View view, float x) {
-        MapsValue.setMap_width((int) (1080 * x));
-        MapsValue.setMap_height((int) (1350 * x));
+    public void SET(HJmap mapview, Chess chess, float multiple) {
+        MapsValue.setMap_width((int) (1080 * multiple));
+        MapsValue.setMap_height((int) (1350 * multiple));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MapsValue.getMap_width(), MapsValue.getMap_height());
         mapview.setLayoutParams(params);
 
-        mapview.setScaleX(x);
-        mapview.setScaleY(x);
+        mapview.setScaleX(multiple);
+        mapview.setScaleY(multiple);
         mapview.setPivotX(0);
         mapview.setPivotY(0);
         mapview.invalidate();
-        Log.d("ppp", "地图宽： " + mapview.getWidth() + "， 高： " + mapview.getHeight());
-        Log.d("ppp", "sv 大小" + scrollView.getWidth() + " , " + scrollView.getHeight());
-        view.setScaleX(x);
-        view.setScaleY(x);
-        view.setPivotX(0);
-        view.setPivotY(0);
-        view.invalidate();
+
+        chessview.SetGeneralPosition(2, 2, multiple);
+        chess.SetPlayerPosition(5, 6, multiple);
+
+        chess.invalidate();
 
         handler = new Handler();
         handler.postDelayed(runnable, 200);
@@ -196,10 +194,10 @@ public class Maps extends AppCompatActivity {
 
         @Override
         public void run() {
-            if (newmultiple != 1) {
-                Log.d("ooo", "此时倍数： " + newmultiple + "移动百分数： " + 0.5 * (1 - 1 / newmultiple));
-                scrollView.scrollTo(0, (int) (1350 * newmultiple * 0.5 * (1 - 1 / newmultiple)));
-                horizontalScrollView.scrollTo((int) (1080 * newmultiple * 0.5 * (1 - 1 / newmultiple)), 0);
+            if (multiple != 1) {
+                Log.d("ooo", "此时倍数： " + multiple + "移动百分数： " + 0.5 * (1 - 1 / multiple));
+                scrollView.scrollTo(0, (int) (1350 * multiple * 0.5 * (1 - 1 / multiple)));
+                horizontalScrollView.scrollTo((int) (1080 * multiple * 0.5 * (1 - 1 / multiple)), 0);
             }
         }
     };

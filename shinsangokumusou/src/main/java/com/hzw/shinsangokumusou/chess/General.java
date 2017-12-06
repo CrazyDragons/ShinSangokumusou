@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.view.View;
 
 /**
  * Project ShinSangokumusou/com.hzw.shinsangokumusou.chess/Chess
@@ -14,7 +13,7 @@ import android.view.View;
  * Time 0:17
  */
 
-public class General extends View {
+public class General extends Chess {
 
     public General(Context context) {
         super(context);
