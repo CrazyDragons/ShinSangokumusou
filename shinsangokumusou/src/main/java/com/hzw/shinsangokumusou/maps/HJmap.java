@@ -65,18 +65,18 @@ public class HJmap extends View {
         DrawMap(Maps, canvas, 15,11, 16,23, MapsValue.Water, "Water");
         DrawMap(Maps, canvas, 35,13, 36,23, MapsValue.Water, "Water");
 
-        DrawMap(Maps, canvas, 57,20, 65,36, MapsValue.Ground, "Ground");
-        DrawMap(Maps, canvas, 66,35, 72,37, MapsValue.Ground, "Ground");
-        DrawMap(Maps, canvas, 68,38, 68,45, MapsValue.Ground, "Ground");
-        DrawMap(Maps, canvas, 55,45, 67,45, MapsValue.Ground, "Ground");
-        DrawMap(Maps, canvas, 55,46, 60,70, MapsValue.Ground, "Ground");
-
         DrawMap(Maps, canvas, 20,20, 50,20, MapsValue.Wall, "Wall");
         DrawMap(Maps, canvas, 20,65, 50,65, MapsValue.Wall, "Wall");
         DrawMap(Maps, canvas, 20,20, 20,65, MapsValue.Wall, "Wall");
         DrawMap(Maps, canvas, 50,20, 50,65, MapsValue.Wall, "Wall");
 
         DrawMap(Maps, canvas, 36,45, 37,46, Color.RED, "Wall");
+
+        DrawMap(Maps, canvas, 57,20, 65,36, MapsValue.Ground, "Ground");
+        DrawMap(Maps, canvas, 66,35, 72,37, MapsValue.Ground, "Ground");
+        DrawMap(Maps, canvas, 68,38, 68,45, MapsValue.Ground, "Ground");
+        DrawMap(Maps, canvas, 55,45, 67,45, MapsValue.Ground, "Ground");
+        DrawMap(Maps, canvas, 55,46, 60,70, MapsValue.Ground, "Ground");
 
         Paint p = new Paint();
         p.setColor(Color.BLACK);
@@ -121,6 +121,12 @@ public class HJmap extends View {
                     }else if (str_color.equals("Water")){
                         Log.d("zzz", "河流： "+"ints["+i+"]["+j+"]被置为1");
                     }
+                }
+            }
+        }else {
+            for (int i = start_X - 1; i < stop_X ; i++) {
+                for (int j = start_Y - 1; j < stop_Y ; j++) {
+                    ints[i][j] = 0;
                 }
             }
         }
