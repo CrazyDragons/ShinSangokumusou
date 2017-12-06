@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hzw.shinsangokumusou">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".diaplay.Welcome">
+
+        </activity>
+        <activity android:name=".diaplay.Home" />
+        <activity android:name=".diaplay.SelectMap" />
+        <activity android:name=".video.CG" />
+        <activity android:name=".video.PlayMV" />
+        <activity android:name=".video.FullScreenMV" />
+        <activity android:name=".diaplay.SelectPlayer" />
+        <activity android:name=".maps.Maps">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

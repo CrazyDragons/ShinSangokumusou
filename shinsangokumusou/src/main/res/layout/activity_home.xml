@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/home_image"
+    tools:context="com.hzw.shinsangokumusou.diaplay.Home">
+
+    <Button
+        android:id="@+id/select_map"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home_btn_style"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="137dp"
+        android:text="自由模式"/>
+
+    <Button
+        android:id="@+id/show_player"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home_btn_style"
+        android:layout_below="@id/select_map"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="50dp"
+        android:text="人物事典"/>
+
+    <Button
+        android:id="@+id/show_MV"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home_btn_style"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/show_player"
+        android:text="影片欣赏"/>
+
+    <Button
+        android:id="@+id/game_setting"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home_btn_style"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/show_MV"
+        android:text="游戏设置"/>
+
+    <Button
+        android:id="@+id/game_exit"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home_btn_style"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/game_setting"
+        android:text="退出游戏"/>
+
+</RelativeLayout>
