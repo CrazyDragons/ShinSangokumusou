@@ -105,7 +105,7 @@ public class SelectMap extends AppCompatActivity {
     public void init(){
 
         music = new Music(mediaPlayer);
-        music.playBGM(SelectMap.this, R.raw.select_map);
+        music.playBGM(SelectMap.this, R.raw.select_map_or_player);
 
         showmap = (ImageView) findViewById(R.id.image_show_map);
         showmap.setImageResource(maps_init);
@@ -155,6 +155,18 @@ public class SelectMap extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        music.playBGM(SelectMap.this, R.raw.select_map);
+        music.playBGM(SelectMap.this, R.raw.select_map_or_player);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        music.stopBGM();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        music.stopBGM();
     }
 }

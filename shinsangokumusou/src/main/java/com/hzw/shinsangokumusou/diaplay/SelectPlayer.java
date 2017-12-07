@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.database.DataBase;
 import com.hzw.shinsangokumusou.maps.Maps;
+import com.hzw.shinsangokumusou.music.Music;
 import com.hzw.shinsangokumusou.staticvalue.SQLiteValue;
 
 public class SelectPlayer extends AppCompatActivity {
@@ -25,6 +27,8 @@ public class SelectPlayer extends AppCompatActivity {
     Button player_confirm;
     private SQLiteDatabase sqLiteDatabase;
     private DataBase dataBase;
+    private Music music;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,9 @@ public class SelectPlayer extends AppCompatActivity {
             }
         }
         cursor.close();
+
+        music = new Music(mediaPlayer);
+        music.playBGM(SelectPlayer.this, R.raw.select_map_or_player);
 
         show_playerLL = (LinearLayout) findViewById(R.id.show_player_head);
         for (int i = 0; i < 10; i++) {
@@ -107,5 +114,29 @@ public class SelectPlayer extends AppCompatActivity {
         player_atc.setProgress((int) (Math.random() * 100));
         player_def.setProgress((int) (Math.random() * 100));
         player_power.setProgress((int) (Math.random() * 100));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        music.pauseBGM();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        music.playBGM(SelectPlayer.this, R.raw.select_map_or_player);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        music.stopBGM();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        music.stopBGM();
     }
 }
