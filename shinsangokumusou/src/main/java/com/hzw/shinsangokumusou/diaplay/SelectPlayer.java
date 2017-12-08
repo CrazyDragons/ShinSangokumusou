@@ -15,11 +15,12 @@ import android.widget.ProgressBar;
 
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.database.DataBase;
+import com.hzw.shinsangokumusou.interfaces.DBUtils;
 import com.hzw.shinsangokumusou.maps.Maps;
 import com.hzw.shinsangokumusou.music.Music;
 import com.hzw.shinsangokumusou.staticvalue.SQLiteValue;
 
-public class SelectPlayer extends AppCompatActivity {
+public class SelectPlayer extends AppCompatActivity implements DBUtils {
 
     LinearLayout show_playerLL;
     ProgressBar player_HP, player_atc, player_def, player_power;
@@ -43,9 +44,8 @@ public class SelectPlayer extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //加载玩家数据
-        dataBase = new DataBase(SelectPlayer.this);
-        sqLiteDatabase = dataBase.getWritableDatabase();
-        Cursor cursor =  sqLiteDatabase.rawQuery(SQLiteValue.Query_Count_Players, null);
+
+        Cursor cursor = getCursor(SQLiteValue.Query_Count_Players, null);
         while (cursor.moveToNext()){
             int count = cursor.getInt(0);
             if (count == 0){
@@ -97,10 +97,13 @@ public class SelectPlayer extends AppCompatActivity {
             }
         });
 
-        /*player_HP.setProgress(Get_play_data("赵云", 1));
+        player_HP.setProgress(Get_play_data("赵云", 1));
         player_atc.setProgress(Get_play_data("赵云", 2));
         player_def.setProgress(Get_play_data("赵云", 3));
-        player_power.setProgress(Get_play_data("赵云", 4));*/
+        player_power.setProgress(Get_play_data("赵云", 4));
+
+        closeDB();
+
     }
 
     /**
@@ -116,7 +119,7 @@ public class SelectPlayer extends AppCompatActivity {
         while (cursor.moveToNext()){
             data = cursor.getInt(index + 1);
         }
-        cursor.close();
+        closeCursor(cursor);
         return data;
     }
 
@@ -152,5 +155,31 @@ public class SelectPlayer extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         music.stopBGM();
+    }
+
+    @Override
+    public SQLiteDatabase getDB() {
+        sqLiteDatabase = new DataBase(SelectPlayer.this).getWritableDatabase();
+        return sqLiteDatabase;
+    }
+
+    @Override
+    public Cursor getCursor(String sql, String[] strings) {
+        return getDB().rawQuery(sql, strings);
+    }
+
+    @Override
+    public void InsertDB(String sql, String[] strings) {
+        getDB().execSQL(sql, strings);
+    }
+
+    @Override
+    public void closeCursor(Cursor cursor) {
+        cursor.close();
+    }
+
+    @Override
+    public void closeDB() {
+        getDB().close();
     }
 }
