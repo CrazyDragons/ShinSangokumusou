@@ -67,11 +67,11 @@ public class PlayMV extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.MV_1:
-                videoView.setVideoURI(Uri.parse ("android.resource://"+getPackageName ()+"/"+R.raw.cg));
+                videoView.setVideoURI(Uri.parse ("android.resource://"+getPackageName ()+"/"+R.raw.cg_opening));
                 videoView.start();
                 break;
             case R.id.MV_2:
-                videoView.setVideoURI(Uri.parse ("android.resource://"+getPackageName ()+"/"+R.raw.ending_cg));
+                videoView.setVideoURI(Uri.parse ("android.resource://"+getPackageName ()+"/"+R.raw.cg_ending));
                 videoView.start();
                 break;
         }

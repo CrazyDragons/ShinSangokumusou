@@ -3,7 +3,6 @@ package com.hzw.shinsangokumusou.maps;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,16 +10,19 @@ import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.chess.Chess;
 import com.hzw.shinsangokumusou.chess.General;
 import com.hzw.shinsangokumusou.chess.Player;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
+import com.hzw.shinsangokumusou.utils.LogUtil;
+import com.hzw.shinsangokumusou.utils.MapsUtils;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
 
-public class Maps extends AppCompatActivity {
+import static com.hzw.shinsangokumusou.utils.MapsUtils.GetPosition;
+
+public class Maps extends AppCompatActivity implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
     private RelativeLayout mapRL;
     private HJmap mapview;
@@ -42,35 +44,106 @@ public class Maps extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        init();
+
+    }
+
+    public void init() {
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         scrollView = (ScrollView) findViewById(R.id.sv);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
+        mapRL = (RelativeLayout) findViewById(R.id.mapview);
+        relativeLayout = (RelativeLayout) findViewById(R.id.messageRL);
+        listView = (RelativeLayout) findViewById(R.id.messageLV);
+        seekBar = (SeekBar) findViewById(R.id.seekbar);
 
         mapview = new HJmap(this);
+        chessview = new General(this);
+        playerview = new Player(this);
+
+        mapview.setId(R.id.HJ_Map);
 
         maps = mapview.getMaps();
 
-        mapview.setBackgroundColor(MapsValue.Ground);
-        chessview = new General(this);
-        playerview = new Player(this);
-        SET(mapview, playerview, multiple);
-        mapRL = (RelativeLayout) findViewById(R.id.mapview);
         mapRL.addView(mapview);
-//        mapRL.addView(chessview);
         mapRL.addView(playerview);
-        mapview.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+        mapview.setBackgroundColor(MapsValue.Ground);
+        SetZoom(mapview, playerview, multiple);
+
+        mapview.setOnTouchListener(this);
+        seekBar.setOnSeekBarChangeListener(this);
+        relativeLayout.setOnClickListener(this);
+        listView.setOnClickListener(this);
+    }
+
+    /**
+     * 设置缩放
+     *
+     * @param mapview  地图
+     * @param chess    棋
+     * @param multiple 倍率
+     */
+    public void SetZoom(HJmap mapview, Chess chess, float multiple) {
+        MapsValue.setMap_width((int) (MapsValue.getMap_width() * multiple));
+        MapsValue.setMap_height((int) (MapsValue.getMap_height() * multiple));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MapsValue.getMap_width(), MapsValue.getMap_height());
+        mapview.setLayoutParams(params);
+
+        mapview.setScaleX(multiple);
+        mapview.setScaleY(multiple);
+        mapview.setPivotX(0);
+        mapview.setPivotY(0);
+        mapview.invalidate();
+
+        chessview.SetGeneralPosition(2, 2, multiple);
+        chess.SetPlayerPosition(5, 6, multiple);
+
+        chess.invalidate();
+
+        handler = new Handler();
+        handler.postDelayed(runnable, 200);
+    }
+
+    private Runnable runnable = new Runnable() {
+
+        @Override
+        public void run() {
+            //每次缩放视图置于屏幕中心
+            if (multiple != 1) {
+                scrollView.scrollTo(0, (int) (MapsValue.getMap_height() * multiple * 0.5 * (1 - 1 / multiple)));
+                horizontalScrollView.scrollTo((int) (MapsValue.getMap_width() * multiple * 0.5 * (1 - 1 / multiple)), 0);
+            }
+        }
+    };
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.messageRL:
+                SetZoom(mapview, playerview, 1f);
+                multiple = 1;
+                break;
+            case R.id.messageLV:
+                SetZoom(mapview, playerview, 8f);
+                multiple = 8;
+                break;
+        }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+
+            case R.id.HJ_Map:
                 int nCnt = motionEvent.getPointerCount();
 
                 switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
                     case MotionEvent.ACTION_UP:
-                        mapview.performClick();
-                        ToastUtil.X4(Maps.this,
+                        ToastUtil.args_4(Maps.this,
                                 "", ToastUtil.X_Y("点击", motionEvent.getX(), motionEvent.getY()),
                                 "", ToastUtil.X_Y("数组", GetPosition(motionEvent.getX() - 1), GetPosition(motionEvent.getY())),
                                 "倍数:   ", multiple,
@@ -82,12 +155,12 @@ public class Maps extends AppCompatActivity {
                         break;
 
                     case MotionEvent.ACTION_POINTER_DOWN:
-                        oldDist = spacing(motionEvent);
+                        oldDist = MapsUtils.Spacing(motionEvent);
                         break;
 
                     case MotionEvent.ACTION_MOVE:
                         /*if (nCnt == 2){
-                            float newDist = spacing(motionEvent);
+                            float newDist = Spacing(motionEvent);
                             if (newDist > oldDist + 1) {
                                 oldDist = newDist;
                                 multiple *= 2;
@@ -113,92 +186,30 @@ public class Maps extends AppCompatActivity {
                     default:
                         break;
                 }
-
-                return true;
-            }
-        });
-
-        seekBar = (SeekBar) findViewById(R.id.seekbar);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                multiple = 1 + 0.07f * i;
-                SET(mapview, playerview, multiple);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        relativeLayout = (RelativeLayout) findViewById(R.id.messageRL);
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SET(mapview, playerview, 1f);
-                multiple = 1;
-            }
-        });
-
-        listView = (RelativeLayout) findViewById(R.id.messageLV);
-        listView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                SET(mapview, playerview, 8f);
-                multiple = 8;
-            }
-        });
-
-    }
-
-    // TODO: 2017/12/7 1:56 优化maps代码结构
-    public void SET(HJmap mapview, Chess chess, float multiple) {
-        MapsValue.setMap_width((int) (1080 * multiple));
-        MapsValue.setMap_height((int) (1350 * multiple));
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MapsValue.getMap_width(), MapsValue.getMap_height());
-        mapview.setLayoutParams(params);
-
-        mapview.setScaleX(multiple);
-        mapview.setScaleY(multiple);
-        mapview.setPivotX(0);
-        mapview.setPivotY(0);
-        mapview.invalidate();
-
-        chessview.SetGeneralPosition(2, 2, multiple);
-        chess.SetPlayerPosition(5, 6, multiple);
-
-        chess.invalidate();
-
-        handler = new Handler();
-        handler.postDelayed(runnable, 200);
-    }
-
-    private float spacing(MotionEvent event) {
-        float x = event.getX(0) - event.getX(1);
-        float y = event.getY(0) - event.getY(1);
-        return (float) Math.sqrt(x * x + y * y);
-    }
-
-    public int GetPosition(float a) {
-        return (int) Math.ceil(a / 15);
-    }
-
-    private Runnable runnable = new Runnable() {
-
-        @Override
-        public void run() {
-            if (multiple != 1) {
-                Log.d("ooo", "此时倍数： " + multiple + "移动百分数： " + 0.5 * (1 - 1 / multiple));
-                scrollView.scrollTo(0, (int) (1350 * multiple * 0.5 * (1 - 1 / multiple)));
-                horizontalScrollView.scrollTo((int) (1080 * multiple * 0.5 * (1 - 1 / multiple)), 0);
-            }
+                break;
         }
-    };
+        return true;
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        switch (seekBar.getId()) {
+            case R.id.seekbar:
+                //滑动条放大地图1-8倍
+                multiple = 1 + 0.07f * i;
+                SetZoom(mapview, playerview, multiple);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 }

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 /**
+ * 将领棋的绘制
  * Project ShinSangokumusou/com.hzw.shinsangokumusou.chess/Chess
  * Created by HZW
  * Data 2017/12/4

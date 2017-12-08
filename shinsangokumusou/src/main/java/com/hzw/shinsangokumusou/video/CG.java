@@ -13,6 +13,9 @@ import android.widget.VideoView;
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.diaplay.Home;
 
+/**
+ * 开头CG
+ */
 public class CG extends AppCompatActivity {
 
     VideoView videoView;
@@ -26,7 +29,7 @@ public class CG extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         videoView = (VideoView) findViewById(R.id.play_CG);
-        videoView.setVideoURI(Uri.parse ("android.resource://"+getPackageName ()+"/"+R.raw.cg));
+        videoView.setVideoURI(Uri.parse ("android.resource://"+getPackageName ()+"/"+R.raw.cg_opening));
         videoView.start();
         videoView.requestFocus();
         videoView.setOnTouchListener(new View.OnTouchListener() {

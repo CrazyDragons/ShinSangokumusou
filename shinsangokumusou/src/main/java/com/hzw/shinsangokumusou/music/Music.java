@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 /**
+ * 音乐
  * Project ShinSangokumusou/com.hzw.shinsangokumusou.music/Music
  * Created by HZW
  * Data 2017/11/14
@@ -18,6 +19,11 @@ public class Music {
         this.mediaPlayer = mediaPlayer;
     }
 
+    /**
+     * 播放音乐
+     * @param activity 当前activity
+     * @param bgm 音乐名称
+     */
     public void playBGM(Context activity, int bgm){
         mediaPlayer = MediaPlayer.create(activity, bgm);
         mediaPlayer.setLooping(true);

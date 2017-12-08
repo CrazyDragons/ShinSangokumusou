@@ -33,6 +33,12 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        init();
+
+    }
+
+    public void init(){
+        //在App入口设置sqlite在线查看插件
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())

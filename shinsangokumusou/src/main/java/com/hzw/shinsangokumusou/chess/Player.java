@@ -8,6 +8,7 @@ import android.graphics.Path;
 import com.hzw.shinsangokumusou.R;
 
 /**
+ * 玩家棋绘制
  * Project ShinSangokumusou/com.hzw.shinsangokumusou.chess/Player
  * Created by HZW
  * Data 2017/12/6

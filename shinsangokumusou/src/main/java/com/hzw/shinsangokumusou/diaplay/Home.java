@@ -10,11 +10,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.music.Music;
+import com.hzw.shinsangokumusou.utils.ToastUtil;
 import com.hzw.shinsangokumusou.video.PlayMV;
+
+/**
+ * 欢迎页
+ */
 
 public class Home extends AppCompatActivity implements View.OnClickListener{
 
@@ -49,13 +53,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         btn_game_exit.setOnClickListener(this);
 
         music = new Music(mediaPlayer);
-        music.playBGM(Home.this, R.raw.select_mode);
+        music.playBGM(Home.this, R.raw.music_select_mode);
 
 
     }
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()){
             case R.id.select_map:
                 startActivity(new Intent(Home.this, SelectMap.class));
@@ -93,8 +98,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
             if ((System.currentTimeMillis() - exitTime) > 2000){
-                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT)
-                        .show();
+                ToastUtil.args_0(getApplicationContext(), "再按一次退出");
                 exitTime = System.currentTimeMillis();
             }else {
                 finish();
@@ -127,7 +131,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onRestart() {
         super.onRestart();
-        music.playBGM(Home.this, R.raw.select_mode);
+        music.playBGM(Home.this, R.raw.music_select_mode);
     }
 
 

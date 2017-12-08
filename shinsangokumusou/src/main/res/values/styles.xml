@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--七星风格-->
     <style name="SevenStars" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/seven_rating_bar</item>
         <item name="android:minHeight">25dp</item>

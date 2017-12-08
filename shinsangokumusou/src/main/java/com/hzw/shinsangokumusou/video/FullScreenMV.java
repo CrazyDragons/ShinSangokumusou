@@ -6,6 +6,9 @@ import android.widget.VideoView;
 
 import com.hzw.shinsangokumusou.R;
 
+/**
+ *全屏播放（暂定）
+ */
 public class FullScreenMV extends AppCompatActivity {
 
     VideoView videoView;

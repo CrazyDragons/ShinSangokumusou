@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.hzw.shinsangokumusou.staticvalue.SQLiteValue;
+
 /**
  * Project ShinSangokumusou/com.hzw.shinsangokumusou.database/DataBase
  * Created by HZW
@@ -19,8 +21,8 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE player_data(id integer primary key autoincrement," +
-                "player_name text, player_HP integer, player_atc integer, player_def integer, player_power integer)");
+        //创建玩家角色表
+        sqLiteDatabase.execSQL(SQLiteValue.Create_Table_Player);
     }
 
     @Override
