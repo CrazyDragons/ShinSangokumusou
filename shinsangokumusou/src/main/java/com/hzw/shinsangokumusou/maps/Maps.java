@@ -13,8 +13,9 @@ import android.widget.SeekBar;
 
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.chess.Chess;
-import com.hzw.shinsangokumusou.chess.General;
-import com.hzw.shinsangokumusou.chess.Player;
+import com.hzw.shinsangokumusou.chess.allchess.General;
+import com.hzw.shinsangokumusou.chess.allchess.Player;
+import com.hzw.shinsangokumusou.maps.allmap.HJmap;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
 import com.hzw.shinsangokumusou.utils.LogUtil;
 import com.hzw.shinsangokumusou.utils.MapsUtils;
@@ -87,10 +88,17 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
      * @param multiple 倍率
      */
     public void SetZoom(HJmap mapview, Chess chess, float multiple) {
-        MapsValue.setMap_width((int) (MapsValue.getMap_width() * multiple));
-        MapsValue.setMap_height((int) (MapsValue.getMap_height() * multiple));
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MapsValue.getMap_width(), MapsValue.getMap_height());
+
+        /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
+        MapsValue.setMap_width((int) (1080 * multiple));
+        MapsValue.setMap_height((int) (1350 * multiple));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                (int) (MapsValue.getMap_width()),
+                (int) (MapsValue.getMap_height()));
         mapview.setLayoutParams(params);
+
+        LogUtil.args_4("test", "srcoll宽： ", scrollView.getWidth(), " scroll高： ", scrollView.getHeight(),
+                "\nmap宽： ", MapsValue.getMap_width() * multiple, "map高：", MapsValue.getMap_height() * multiple);
 
         mapview.setScaleX(multiple);
         mapview.setScaleY(multiple);
@@ -113,8 +121,9 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
         public void run() {
             //每次缩放视图置于屏幕中心
             if (multiple != 1) {
-                scrollView.scrollTo(0, (int) (MapsValue.getMap_height() * multiple * 0.5 * (1 - 1 / multiple)));
-                horizontalScrollView.scrollTo((int) (MapsValue.getMap_width() * multiple * 0.5 * (1 - 1 / multiple)), 0);
+                /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
+                scrollView.scrollTo(0, (int) (1350 * multiple * 0.5 * (1 - 1 / multiple)));
+                horizontalScrollView.scrollTo((int) (1080 * multiple * 0.5 * (1 - 1 / multiple)), 0);
             }
         }
     };

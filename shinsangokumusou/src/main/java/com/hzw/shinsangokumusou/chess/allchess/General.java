@@ -1,10 +1,12 @@
-package com.hzw.shinsangokumusou.chess;
+package com.hzw.shinsangokumusou.chess.allchess;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+
+import com.hzw.shinsangokumusou.chess.Chess;
 
 /**
  * 将领棋的绘制

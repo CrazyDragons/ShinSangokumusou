@@ -1,4 +1,4 @@
-package com.hzw.shinsangokumusou.chess;
+package com.hzw.shinsangokumusou.chess.allchess;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.hzw.shinsangokumusou.R;
+import com.hzw.shinsangokumusou.chess.Chess;
 
 /**
  * 玩家棋绘制

@@ -1,4 +1,4 @@
-package com.hzw.shinsangokumusou.maps;
+package com.hzw.shinsangokumusou.maps.allmap;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -60,6 +60,7 @@ public class HJmap extends View {
         return Maps;
     }
 
+    // TODO: 2017/12/8 17:52 地图这里，根据以后是否点击棋子能显示预计攻击范围，决定是否显示网格
     public void DrawMap(Canvas canvas){
         //画草地部分
         MapsUtils.DrawRect(Maps, canvas, 1,1, 60,3, MapsValue.Glass, "Glass");
