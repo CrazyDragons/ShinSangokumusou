@@ -1,17 +1,13 @@
 package com.hzw.shinsangokumusou.diaplay;
 
-import android.content.Intent;
+import android.media.SoundPool;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.hzw.shinsangokumusou.R;
-import com.hzw.shinsangokumusou.video.CG;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.hzw.shinsangokumusou.music.SoundEffects;
+import com.hzw.shinsangokumusou.utils.ActivityUtils;
 
 import okhttp3.OkHttpClient;
 
@@ -26,7 +22,9 @@ import okhttp3.OkHttpClient;
  * 欢迎界面
  */
 
-public class Welcome extends AppCompatActivity {
+public class Welcome extends BaseDisplay {
+
+    private SoundPool soundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +42,10 @@ public class Welcome extends AppCompatActivity {
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
-        //隐藏标题
-        getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        new SoundEffects(Welcome.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_opening);
+
 
         //定时跳转
-        final Intent intent = new Intent(this, CG.class);
-
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                startActivity(intent);
-                finish();
-            }
-        };
-        //设置2000毫秒后跳转
-        timer.schedule(timerTask, 2000);
+        new ActivityUtils().DelayJunm(Welcome.this, Home.class, 4000);
     }
 }

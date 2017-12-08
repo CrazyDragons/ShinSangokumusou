@@ -1,11 +1,10 @@
 package com.hzw.shinsangokumusou.maps;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -15,16 +14,17 @@ import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.chess.Chess;
 import com.hzw.shinsangokumusou.chess.allchess.General;
 import com.hzw.shinsangokumusou.chess.allchess.Player;
+import com.hzw.shinsangokumusou.diaplay.BaseDisplay;
 import com.hzw.shinsangokumusou.maps.allmap.HJmap;
+import com.hzw.shinsangokumusou.music.BGM;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
 import com.hzw.shinsangokumusou.utils.LogUtil;
 import com.hzw.shinsangokumusou.utils.MapsUtils;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
 
-import static com.hzw.shinsangokumusou.music.Music.playBGM;
 import static com.hzw.shinsangokumusou.utils.MapsUtils.GetPosition;
 
-public class Maps extends AppCompatActivity implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
     private RelativeLayout mapRL;
     private HJmap mapview;
@@ -40,6 +40,8 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
     private float multiple = 1;
     private Handler handler;
     private int[][] maps;
+    MediaPlayer mediaPlayer;
+    BGM BGM = new BGM(mediaPlayer);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,9 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
         setContentView(R.layout.activity_maps);
 
         init();
-
     }
 
     public void init() {
-        getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         scrollView = (ScrollView) findViewById(R.id.sv);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
@@ -80,7 +79,8 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
         relativeLayout.setOnClickListener(this);
         listView.setOnClickListener(this);
 
-        playBGM(Maps.this, R.raw.cg_ending);
+        BGM.playBGM(Maps.this, R.raw.music_hj_map);
+
     }
 
     /**
@@ -223,5 +223,29 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BGM.pauseBGM();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        BGM.playBGM(Maps.this, R.raw.music_hj_map);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BGM.stopBGM();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        BGM.stopBGM();
     }
 }

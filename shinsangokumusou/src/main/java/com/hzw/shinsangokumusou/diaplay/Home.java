@@ -1,30 +1,30 @@
 package com.hzw.shinsangokumusou.diaplay;
 
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.hzw.shinsangokumusou.R;
+import com.hzw.shinsangokumusou.music.BGM;
+import com.hzw.shinsangokumusou.music.SoundEffects;
+import com.hzw.shinsangokumusou.utils.ActivityUtils;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
 import com.hzw.shinsangokumusou.video.PlayMV;
-
-import static com.hzw.shinsangokumusou.music.Music.pauseBGM;
-import static com.hzw.shinsangokumusou.music.Music.playBGM;
-import static com.hzw.shinsangokumusou.music.Music.stopBGM;
 
 /**
  * 欢迎页
  */
 
-public class Home extends AppCompatActivity implements View.OnClickListener{
+public class Home extends BaseDisplay implements View.OnClickListener{
 
     Button btn_select_map, btn_show_player, btn_show_MV, btn_game_setting, btn_game_exit;
+    MediaPlayer mediaPlayer;
+    BGM BGM = new BGM(mediaPlayer);
     private long exitTime = 0;
 
     @Override
@@ -37,8 +37,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void init(){
-        getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         btn_select_map = (Button) findViewById(R.id.select_map);
         btn_show_player = (Button) findViewById(R.id.show_player);
@@ -52,7 +50,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         btn_game_setting.setOnClickListener(this);
         btn_game_exit.setOnClickListener(this);
 
-        playBGM(Home.this, R.raw.music_select_mode);
+        BGM.playBGM(Home.this, R.raw.music_select_mode);
 
 
     }
@@ -62,12 +60,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         switch (view.getId()){
             case R.id.select_map:
-                startActivity(new Intent(Home.this, SelectMap.class));
+                new SoundEffects(Home.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_commit);
+                new ActivityUtils().DelayJunm(Home.this, SelectMap.class, 1000);
                 break;
             case R.id.show_player:
                 break;
             case R.id.show_MV:
-                startActivity(new Intent(Home.this, PlayMV.class));
+                new SoundEffects(Home.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_cancel);
+                new ActivityUtils().DelayJunm(Home.this, PlayMV.class, 1000);
                 break;
             case R.id.game_setting:
                 break;
@@ -112,25 +112,25 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
     protected void onDestroy() {
         super.onDestroy();
         finish();
-        stopBGM();
+        BGM.stopBGM();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        pauseBGM();
+        BGM.pauseBGM();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        pauseBGM();
+        BGM.pauseBGM();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        playBGM(Home.this, R.raw.music_select_mode);
+        BGM.playBGM(Home.this, R.raw.music_select_mode);
     }
 
 

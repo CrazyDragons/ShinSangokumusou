@@ -1,10 +1,9 @@
 package com.hzw.shinsangokumusou.diaplay;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,15 +14,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.hzw.shinsangokumusou.R;
+import com.hzw.shinsangokumusou.music.BGM;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
 
 import static com.hzw.shinsangokumusou.R.drawable.maps_init;
-import static com.hzw.shinsangokumusou.music.Music.pauseBGM;
-import static com.hzw.shinsangokumusou.music.Music.playBGM;
-import static com.hzw.shinsangokumusou.music.Music.stopBGM;
 
-public class SelectMap extends AppCompatActivity {
+public class SelectMap extends BaseDisplay {
 
+    private MediaPlayer mediaPlayer;
+    BGM BGM = new BGM(mediaPlayer);
     private ListView listView;
     private ImageView showmap;
     private TextView text_map_name, text_map_yaer, VS_A, VS_B;
@@ -45,10 +44,7 @@ public class SelectMap extends AppCompatActivity {
 
     public void init(){
 
-        getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        playBGM(SelectMap.this, R.raw.music_select_map_or_player);
+        BGM.playBGM(SelectMap.this, R.raw.music_select_map_or_player);
 
         showmap = (ImageView) findViewById(R.id.image_show_map);
         text_map_name = (TextView) findViewById(R.id.text_map_name);
@@ -91,24 +87,24 @@ public class SelectMap extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        pauseBGM();
+        BGM.pauseBGM();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        playBGM(SelectMap.this, R.raw.music_select_map_or_player);
+        BGM.playBGM(SelectMap.this, R.raw.music_select_map_or_player);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopBGM();
+        BGM.stopBGM();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        stopBGM();
+        BGM.stopBGM();
     }
 }

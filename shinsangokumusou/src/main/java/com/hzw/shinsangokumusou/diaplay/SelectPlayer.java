@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -16,19 +15,18 @@ import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.database.DataBase;
 import com.hzw.shinsangokumusou.interfaces.DBUtils;
 import com.hzw.shinsangokumusou.maps.Maps;
+import com.hzw.shinsangokumusou.music.BGM;
 import com.hzw.shinsangokumusou.staticvalue.SQLiteValue;
 
-import static com.hzw.shinsangokumusou.music.Music.pauseBGM;
-import static com.hzw.shinsangokumusou.music.Music.playBGM;
-import static com.hzw.shinsangokumusou.music.Music.stopBGM;
-
-public class SelectPlayer extends AppCompatActivity implements DBUtils {
+public class SelectPlayer extends BaseDisplay implements DBUtils {
 
     LinearLayout show_playerLL;
     ProgressBar player_HP, player_atc, player_def, player_power;
     Button player_confirm;
     private SQLiteDatabase sqLiteDatabase;
     private DataBase dataBase;
+    private MediaPlayer mediaPlayer;
+    BGM BGM = new BGM(mediaPlayer);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +38,6 @@ public class SelectPlayer extends AppCompatActivity implements DBUtils {
 
     public void init(){
 
-        getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         //加载玩家数据
         Cursor cursor = getCursor(SQLiteValue.Query_Count_Players, null);
         while (cursor.moveToNext()){
@@ -53,7 +48,7 @@ public class SelectPlayer extends AppCompatActivity implements DBUtils {
         }
         cursor.close();
 
-        playBGM(SelectPlayer.this, R.raw.music_select_map_or_player);
+        BGM.playBGM(SelectPlayer.this, R.raw.music_select_map_or_player);
 
         //加载人物头像
         show_playerLL = (LinearLayout) findViewById(R.id.show_player_head);
@@ -134,25 +129,25 @@ public class SelectPlayer extends AppCompatActivity implements DBUtils {
     @Override
     protected void onPause() {
         super.onPause();
-        pauseBGM();
+        BGM.pauseBGM();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-       playBGM(SelectPlayer.this, R.raw.music_select_map_or_player);
+        BGM.playBGM(SelectPlayer.this, R.raw.music_select_map_or_player);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopBGM();
+        BGM.stopBGM();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        stopBGM();
+        BGM.stopBGM();
     }
 
     @Override
