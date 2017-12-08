@@ -16,5 +16,4 @@ public interface DBUtils {
     public void InsertDB(String sql, String[] strings);
     public void closeCursor(Cursor cursor);
     public void closeDB();
-    // TODO: 2017/12/8 18:27 写完数据库接口
 }
