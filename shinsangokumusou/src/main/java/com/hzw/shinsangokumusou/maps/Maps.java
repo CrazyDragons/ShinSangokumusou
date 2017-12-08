@@ -21,6 +21,7 @@ import com.hzw.shinsangokumusou.utils.LogUtil;
 import com.hzw.shinsangokumusou.utils.MapsUtils;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
 
+import static com.hzw.shinsangokumusou.music.Music.playBGM;
 import static com.hzw.shinsangokumusou.utils.MapsUtils.GetPosition;
 
 public class Maps extends AppCompatActivity implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
@@ -78,6 +79,8 @@ public class Maps extends AppCompatActivity implements View.OnTouchListener, See
         seekBar.setOnSeekBarChangeListener(this);
         relativeLayout.setOnClickListener(this);
         listView.setOnClickListener(this);
+
+        playBGM(Maps.this, R.raw.cg_ending);
     }
 
     /**

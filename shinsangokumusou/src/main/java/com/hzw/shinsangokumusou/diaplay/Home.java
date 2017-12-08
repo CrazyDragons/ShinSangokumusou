@@ -2,7 +2,6 @@ package com.hzw.shinsangokumusou.diaplay;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +11,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.hzw.shinsangokumusou.R;
-import com.hzw.shinsangokumusou.music.Music;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
 import com.hzw.shinsangokumusou.video.PlayMV;
+
+import static com.hzw.shinsangokumusou.music.Music.pauseBGM;
+import static com.hzw.shinsangokumusou.music.Music.playBGM;
+import static com.hzw.shinsangokumusou.music.Music.stopBGM;
 
 /**
  * 欢迎页
@@ -23,8 +25,6 @@ import com.hzw.shinsangokumusou.video.PlayMV;
 public class Home extends AppCompatActivity implements View.OnClickListener{
 
     Button btn_select_map, btn_show_player, btn_show_MV, btn_game_setting, btn_game_exit;
-    MediaPlayer mediaPlayer;
-    Music music;
     private long exitTime = 0;
 
     @Override
@@ -52,8 +52,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         btn_game_setting.setOnClickListener(this);
         btn_game_exit.setOnClickListener(this);
 
-        music = new Music(mediaPlayer);
-        music.playBGM(Home.this, R.raw.music_select_mode);
+        playBGM(Home.this, R.raw.music_select_mode);
 
 
     }
@@ -113,25 +112,25 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
     protected void onDestroy() {
         super.onDestroy();
         finish();
-        music.stopBGM();
+        stopBGM();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        music.pauseBGM();
+        pauseBGM();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        music.pauseBGM();
+        pauseBGM();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        music.playBGM(Home.this, R.raw.music_select_mode);
+        playBGM(Home.this, R.raw.music_select_mode);
     }
 
 

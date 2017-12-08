@@ -13,28 +13,26 @@ import android.media.MediaPlayer;
 
 public class Music {
 
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
 
-    public Music(MediaPlayer mediaPlayer) {
-        this.mediaPlayer = mediaPlayer;
-    }
+    public Music() {}
 
     /**
      * 播放音乐
      * @param activity 当前activity
      * @param bgm 音乐名称
      */
-    public void playBGM(Context activity, int bgm){
+    public static void playBGM(Context activity, int bgm){
         mediaPlayer = MediaPlayer.create(activity, bgm);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
     }
 
-    public void stopBGM(){
+    public static void stopBGM(){
         mediaPlayer.stop();
     }
 
-    public void pauseBGM(){
+    public static void pauseBGM(){
         mediaPlayer.pause();
     }
 }
