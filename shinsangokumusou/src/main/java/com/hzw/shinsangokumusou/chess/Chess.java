@@ -13,7 +13,7 @@ import com.hzw.shinsangokumusou.staticvalue.MapsValue;
  * Time 21:38
  */
 
-public  class Chess extends View {
+public abstract class Chess extends View {
 
     public Chess(Context context) {
         super(context);

@@ -5,10 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 
+import com.hzw.shinsangokumusou.maps.BaseMap;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
 import com.hzw.shinsangokumusou.utils.MapsUtils;
+
+import static com.hzw.shinsangokumusou.utils.MapsUtils.DrawGrid;
+import static com.hzw.shinsangokumusou.utils.MapsUtils.initMap;
 
 /**
  * 黄巾之乱地图
@@ -18,7 +21,7 @@ import com.hzw.shinsangokumusou.utils.MapsUtils;
  * Time 21:26
  */
 
-public class HJmap extends View {
+public class HJmap extends BaseMap {
 
     private  int[][] Maps = new int[MapsValue.MAX_X][MapsValue.MAX_Y];
 
@@ -49,9 +52,9 @@ public class HJmap extends View {
 
     public void init(Canvas canvas){
         //初始化全图
-        MapsUtils.initMap(Maps);
+        initMap(Maps);
         //画网格
-        MapsUtils.DrawGrid(canvas);
+        DrawGrid(canvas);
         //画地图
         DrawMap(canvas);
     }
