@@ -1,10 +1,10 @@
 package com.hzw.shinsangokumusou.diaplay;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +16,11 @@ import com.hzw.shinsangokumusou.database.DataBase;
 import com.hzw.shinsangokumusou.interfaces.DBUtils;
 import com.hzw.shinsangokumusou.maps.Maps;
 import com.hzw.shinsangokumusou.music.BGM;
+import com.hzw.shinsangokumusou.music.SoundEffects;
 import com.hzw.shinsangokumusou.staticvalue.SQLiteValue;
+import com.hzw.shinsangokumusou.utils.ActivityUtils;
+
+import java.util.TimerTask;
 
 public class SelectPlayer extends BaseDisplay implements DBUtils {
 
@@ -85,7 +89,8 @@ public class SelectPlayer extends BaseDisplay implements DBUtils {
         player_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SelectPlayer.this, Maps.class));
+                new SoundEffects(SelectPlayer.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_commit);
+                new ActivityUtils().DelayJunm(SelectPlayer.this, Maps.class, 1000);
                 finish();
             }
         });
@@ -135,7 +140,14 @@ public class SelectPlayer extends BaseDisplay implements DBUtils {
     @Override
     protected void onRestart() {
         super.onRestart();
-        BGM.playBGM(SelectPlayer.this, R.raw.music_select_map_or_player);
+        new SoundEffects(SelectPlayer.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_cancel);
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                BGM.playBGM(SelectPlayer.this, R.raw.music_select_map_or_player);
+            }
+        };
+        ActivityUtils.DelaTask(timerTask, 1000);
     }
 
     @Override

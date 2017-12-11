@@ -16,6 +16,8 @@ import com.hzw.shinsangokumusou.utils.ActivityUtils;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
 import com.hzw.shinsangokumusou.video.PlayMV;
 
+import java.util.TimerTask;
+
 /**
  * 欢迎页
  */
@@ -66,7 +68,7 @@ public class Home extends BaseDisplay implements View.OnClickListener{
             case R.id.show_player:
                 break;
             case R.id.show_MV:
-                new SoundEffects(Home.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_cancel);
+                new SoundEffects(Home.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_commit);
                 new ActivityUtils().DelayJunm(Home.this, PlayMV.class, 1000);
                 break;
             case R.id.game_setting:
@@ -130,7 +132,14 @@ public class Home extends BaseDisplay implements View.OnClickListener{
     @Override
     protected void onRestart() {
         super.onRestart();
-        BGM.playBGM(Home.this, R.raw.music_select_mode);
+        new SoundEffects(Home.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_cancel);
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                BGM.playBGM(Home.this, R.raw.music_select_mode);
+            }
+        };
+        ActivityUtils.DelaTask(timerTask, 1000);
     }
 
 

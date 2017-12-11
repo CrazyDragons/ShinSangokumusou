@@ -16,7 +16,12 @@ import java.util.TimerTask;
  */
 
 public class ActivityUtils extends AppCompatActivity {
-    //定时跳转
+    /**
+     * 定时跳转
+     * @param context 原activity
+     * @param cls 要跳转的activity
+     * @param delay 延时时间（毫秒）
+     */
     public void DelayJunm(final Activity context, Class<?> cls, long delay){
         final Intent intent = new Intent(context, cls);
 
@@ -33,6 +38,16 @@ public class ActivityUtils extends AppCompatActivity {
             }
         };
         //设置4000毫秒后跳转
+        timer.schedule(timerTask, delay);
+    }
+
+    /**
+     * 延时任务
+     * @param timerTask 任务
+     * @param delay 延时时间（毫秒）
+     */
+    public static void DelaTask(TimerTask timerTask, long delay){
+        Timer timer = new Timer();
         timer.schedule(timerTask, delay);
     }
 }

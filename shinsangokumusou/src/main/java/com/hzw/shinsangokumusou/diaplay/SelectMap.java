@@ -1,7 +1,7 @@
 package com.hzw.shinsangokumusou.diaplay;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +15,11 @@ import android.widget.TextView;
 
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.music.BGM;
+import com.hzw.shinsangokumusou.music.SoundEffects;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
+import com.hzw.shinsangokumusou.utils.ActivityUtils;
+
+import java.util.TimerTask;
 
 import static com.hzw.shinsangokumusou.R.drawable.maps_init;
 
@@ -61,7 +65,8 @@ public class SelectMap extends BaseDisplay {
         map_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SelectMap.this, SelectPlayer.class));
+                new SoundEffects(SelectMap.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_commit);
+                new ActivityUtils().DelayJunm(SelectMap.this, SelectPlayer.class, 1000);
                 finish();
             }
         });
@@ -93,7 +98,14 @@ public class SelectMap extends BaseDisplay {
     @Override
     protected void onRestart() {
         super.onRestart();
-        BGM.playBGM(SelectMap.this, R.raw.music_select_map_or_player);
+        new SoundEffects(SelectMap.this, new SoundPool.Builder().build()).playSoundEffects(R.raw.soundeffects_cancel);
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                BGM.playBGM(SelectMap.this, R.raw.music_select_map_or_player);
+            }
+        };
+        ActivityUtils.DelaTask(timerTask, 1000);
     }
 
     @Override
