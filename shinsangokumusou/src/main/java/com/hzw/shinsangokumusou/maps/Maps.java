@@ -83,7 +83,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
         mapRL.addView(chessView);
 
         mapview.setBackgroundColor(MapsValue.Ground);
-        chessView.SetPlayerPosition(5, 6, 0, multiple);
+        chessView.SetGeneralPosition(4, 4, multiple);
 
         mapview.setOnTouchListener(this);
         seekBar.setOnSeekBarChangeListener(this);
@@ -120,10 +120,10 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
         mapview.setPivotY(0);
         mapview.invalidate();
 
-        if (newW ==0 && newH == 0){
-            chess.SetGeneralPosition(5, 6, 0, multiple);
+        if (newW == 0 && newH == 0){
+            chess.SetPlayerPosition(4, 4, multiple);
         }else {
-            chess.SetGeneralPosition(GetPosition(newW), GetPosition(newH), 0, multiple);
+            chess.SetPlayerPosition(GetPosition(newW), GetPosition(newH), multiple);
         }
         LogUtil.args_2("ggg", "X： ", chess.getX(), " ，Y：", chess.getY());
 
@@ -159,21 +159,26 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
                     case MotionEvent.ACTION_UP:
 
-                        ToastUtil.args_4(Maps.this,
+                        /*ToastUtil.args_4(Maps.this,
                                 "", ToastUtil.X_Y("点击", motionEvent.getX(), motionEvent.getY()),
                                 "", ToastUtil.X_Y("数组", GetPosition(motionEvent.getX() - 1), GetPosition(motionEvent.getY())),
                                 "倍数:   ", multiple,
-                                "该位置参数:   ", maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1]);
+                                "该位置参数:   ", maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1]);*/
 
                         if (!chessView.isMoving() && !chessView.isComplete()) {
                             newW = motionEvent.getX();
                             newH = motionEvent.getY();
-                            chessView.setTranslationX(newW * multiple);
-                            chessView.setTranslationY(newH * multiple);
-                            chessView.setTranslationY(motionEvent.getY());
-                            rad = getRad((newW - oldW), (newH - oldH));
-                            chessView.setRotation(0);
-                            chessView.SetGeneralPosition(GetPosition(motionEvent.getX() - 1), GetPosition(motionEvent.getY()), 0, multiple);
+                            if (newW == 0 && newH == 0){
+                                chessView.setOldW(5 * 15);
+                                chessView.setOldH(6 * 15);
+                            }
+                            rad = getRad((GetPosition(newW) - ((GetPosition(chessView.getOldW()) - 1))), ((GetPosition(chessView.getOldH())) - (GetPosition(newH))));
+
+                            LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessView.getOldW()) - 1)," , 原Y： ", GetPosition(chessView.getOldH()),
+                                    "\n现X：", GetPosition(newW), " , 现Y： ", GetPosition(newH));
+                            chessView.setRad(rad);
+
+                            chessView.SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
                             chessView.invalidate();
                             /*Log.d(TAG, "确认位置 :（"+newW+" , "+newH+"）, 旋转了 "+rad+" 度");
                             Log.d(TAG, "位置增量 :（"+(newW - oldW)+" , "+(newH - oldH)+"）");

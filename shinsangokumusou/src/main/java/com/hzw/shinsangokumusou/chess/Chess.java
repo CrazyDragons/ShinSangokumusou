@@ -31,6 +31,8 @@ public abstract class Chess extends View {
     private boolean change = false;
 
     private float oldX, oldY, newX, newY;
+    private float oldW;
+    private float oldH;
 
     public Chess(Context context) {
         super(context);
@@ -41,14 +43,13 @@ public abstract class Chess extends View {
      * @param X 棋盘X轴位置
      * @param Y 棋盘Y轴位置
      */
-    public void SetPlayerPosition(int X, int Y, float rad, float multiple){
+    public void SetPlayerPosition(int X, int Y, float multiple){
         setTranslationX((X - 2) * MapsValue.Eachmap);
-        setTranslationY((Y - 3) * MapsValue.Eachmap);
+        setTranslationY((Y - 2) * MapsValue.Eachmap);
         setScaleX(multiple);
         setScaleY(multiple);
         setPivotX(-MapsValue.Eachmap * (X - 2));
-        setPivotY(-MapsValue.Eachmap * (Y - 3));
-        setRotation(rad);
+        setPivotY(-MapsValue.Eachmap * (Y - 2));
     }
 
     /**
@@ -56,17 +57,16 @@ public abstract class Chess extends View {
      * @param X 棋盘X轴位置
      * @param Y 棋盘Y轴位置
      */
-    public void SetGeneralPosition(int X, int Y, float rad, float multiple){
-        setTranslationX((X - 1) * MapsValue.Eachmap);
-        setTranslationY((Y - 1) * MapsValue.Eachmap);
+    public void SetGeneralPosition(int X, int Y, float multiple){
+        setTranslationX((X - 2) * MapsValue.Eachmap);
+        setTranslationY((Y - 2) * MapsValue.Eachmap);
         setScaleX(multiple);
         setScaleY(multiple);
-        setPivotX(-MapsValue.Eachmap * (X - 1));
-        setPivotY(-MapsValue.Eachmap * (Y - 1));
-        setRotation(rad);
+        setPivotX(-MapsValue.Eachmap * (X - 2));
+        setPivotY(-MapsValue.Eachmap * (Y - 2));
     }
 
-    // TODO: 2017/12/7 1:57 添加点击闪烁，移动，修改二维数组功能
+    // TODO: 2017/12/7 1:57 添加修改二维数组功能
 
 
     @Override
@@ -98,6 +98,9 @@ public abstract class Chess extends View {
 
             case MotionEvent.ACTION_UP:
 
+                oldW = getX() + 45;
+                oldH = getY() + 30;
+
                 Moving = true;
                 Complete = false;
                 LogUtil.args_1("xxx", "完成（chess按下）： ", Complete);
@@ -115,35 +118,41 @@ public abstract class Chess extends View {
      * @param y
      * @return 旋转角度
      */
-    public static float getRad(double x, double y){
-        double tan = y / x;
+    public static float getRad(int x, int y){
         int F;
         float Rad = 0;
-
-        if (tan >=2.414 || tan < -2.414){
+        /*if (x == 0) {
             F = 1;
-        }else if (tan >= -0.414 && tan <= 0.414){
-            F = 0;
         }else {
-            F = 2;
-        }
+            tan = y / x;
 
-        if (y < 0 && F == 1){
+            if (tan >=2.414 || tan < -2.414){
+                F = 1;
+            }else if (tan >= -0.414 && tan <= 0.414){
+                F = 0;
+            }else {
+                F = 2;
+            }
+        }*/
+
+        LogUtil.args_2("rrr",", x: ", x, ", y: ", y);
+
+        if (x == 0 && y > 0){
             Rad = 0;
-        }else if (x > 0 && y < 0 && F == 2){
+        }else if (x > 0 && y > 0){
             Rad = 45;
-        }else if (x > 0 && F == 0){
+        }else if (x > 0 && y == 0){
             Rad = 90;
-        }else if (x > 0 && y > 0 && F == 2){
+        }else if (x > 0 && y < 0){
             Rad = 135;
-        }else if (y > 0 && F == 1){
+        }else if (x == 0 && y < 0){
             Rad = 180;
-        }else if (x < 0 && y > 0 && F == 2){
+        }else if (x < 0 && y < 0){
             Rad = 225;
-        }else if (x < 0 && F == 0){
+        }else if (x < 0 && y == 0){
             Rad = 270;
-        }else if (x < 0 && y < 0 && F == 2){
-            Rad =315;
+        }else if (x < 0 && y > 0){
+            Rad = 315;
         }
 
         return Rad;
@@ -163,6 +172,26 @@ public abstract class Chess extends View {
 
     public boolean isComplete() {
         return Complete;
+    }
+
+    public TimerTask getTimerTask() {
+        return timerTask;
+    }
+
+    public float getOldW() {
+        return oldW;
+    }
+
+    public float getOldH() {
+        return oldH;
+    }
+
+    public void setOldW(float oldW) {
+        this.oldW = oldW;
+    }
+
+    public void setOldH(float oldH) {
+        this.oldH = oldH;
     }
 
     public Timer getTimer() {
