@@ -23,6 +23,8 @@ public class DataBase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //创建玩家角色表
         sqLiteDatabase.execSQL(SQLiteValue.Create_Table_Player);
+        sqLiteDatabase.execSQL(SQLiteValue.Create_Table_Chess);
+        sqLiteDatabase.execSQL(SQLiteValue.Create_Table_TEST);
     }
 
     @Override

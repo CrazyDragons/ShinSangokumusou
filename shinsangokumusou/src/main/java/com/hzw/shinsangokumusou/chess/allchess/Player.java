@@ -19,10 +19,12 @@ import com.hzw.shinsangokumusou.chess.Chess;
 public class Player extends Chess {
 
     public float rad = 0;
+    public int name;
 
-    public Player(Context context) {
-        super(context);
+    public Player(Context context, int name) {
+        super(context, name);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {

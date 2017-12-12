@@ -174,8 +174,13 @@ public class SelectPlayer extends BaseDisplay implements DBUtils {
     }
 
     @Override
-    public void InsertDB(String sql, String[] strings) {
-        getDB().execSQL(sql, strings);
+    public void InsertDB(String sql, Object[] objects) {
+        getDB().execSQL(sql, objects);
+    }
+
+    @Override
+    public void UpdateDB(String sql, Object[] objects) {
+
     }
 
     @Override

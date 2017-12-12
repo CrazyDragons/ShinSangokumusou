@@ -1,5 +1,7 @@
 package com.hzw.shinsangokumusou.maps;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,21 +19,25 @@ import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.chess.Chess;
 import com.hzw.shinsangokumusou.chess.allchess.General;
 import com.hzw.shinsangokumusou.chess.allchess.Player;
+import com.hzw.shinsangokumusou.database.DataBase;
 import com.hzw.shinsangokumusou.diaplay.BaseDisplay;
+import com.hzw.shinsangokumusou.interfaces.DBUtils;
 import com.hzw.shinsangokumusou.maps.allmap.HJmap;
 import com.hzw.shinsangokumusou.music.BGM;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
+import com.hzw.shinsangokumusou.staticvalue.SQLiteValue;
 import com.hzw.shinsangokumusou.utils.IOUtils;
 import com.hzw.shinsangokumusou.utils.LogUtil;
 import com.hzw.shinsangokumusou.utils.MapsUtils;
-import com.hzw.shinsangokumusou.utils.ToastUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import static com.hzw.shinsangokumusou.chess.Chess.getRad;
 import static com.hzw.shinsangokumusou.utils.MapsUtils.GetPosition;
 
-public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener , DBUtils{
 
     private RelativeLayout mapRL;
     private HJmap mapview;
@@ -39,7 +45,6 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     private HorizontalScrollView horizontalScrollView;
     private RelativeLayout relativeLayout;
     private RelativeLayout listView;
-    private General chessView;
     private Player playerview;
     private SeekBar seekBar;
     private Button save;
@@ -55,6 +60,10 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     private Timer timer;
     boolean change = false;
     private float rad;
+    private List<Chess> chessList;
+    private SQLiteDatabase sqLiteDatabase;
+    private int name = 0;
+    private int moving = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +83,18 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
         seekBar = (SeekBar) findViewById(R.id.seekbar);
 
         mapview = new HJmap(this);
-        chessView = new General(this);
-        LogUtil.args_1("xxx", "完成(在map初始化)： ", chessView.isComplete());
-        playerview = new Player(this);
 
         mapview.setId(R.id.HJ_Map);
 
         maps = mapview.getMaps();
 
+        chessList = getChessList();
         mapRL.addView(mapview);
-        mapRL.addView(chessView);
+        for (int i = 0; i < chessList.size(); i++) {
+            mapRL.addView(chessList.get(i));
+        }
 
         mapview.setBackgroundColor(MapsValue.Ground);
-        chessView.SetGeneralPosition(4, 4, multiple);
 
         mapview.setOnTouchListener(this);
         seekBar.setOnSeekBarChangeListener(this);
@@ -105,6 +113,32 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
     }
 
+    public List<Chess> getChessList(){
+
+        ArrayList<Chess> chessList = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            General general = new General(this, i);
+            general.setId(i);
+            general.SetGeneralPosition(3 * i, 3 * i, multiple);
+            chessList.add(general);
+        }
+
+        Cursor cursor = getCursor(SQLiteValue.Query_Count_Chess, null);
+        while (cursor.moveToNext()){
+            int count = cursor.getInt(0);
+            if (count == 0){
+                for (int i = 0; i < 10; i++) {
+                    InsertDB(SQLiteValue.Insert_Chess, new Object[]{null, i+"", 0, 1});
+                }
+            }
+        }
+        closeCursor(cursor);
+        closeDB();
+
+        return chessList;
+    }
+
     /**
      * 设置缩放
      *
@@ -112,7 +146,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
      * @param chess    棋
      * @param multiple 倍率
      */
-    public void SetZoom(HJmap mapview, Chess chess, float multiple) {
+    public void SetZoom(HJmap mapview,  List<Chess> chesslist, float multiple) {
 
         /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
         MapsValue.setMap_width((int) (1080 * multiple));
@@ -131,31 +165,41 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
         mapview.setPivotY(0);
         mapview.invalidate();
 
-        if (newW == 0 && newH == 0){
+        /*if (newW == 0 && newH == 0){
             chess.SetPlayerPosition(4, 4, multiple);
         }else {
-            chess.SetPlayerPosition(GetPosition(newW), GetPosition(newH), multiple);
-        }
-        LogUtil.args_2("ggg", "X： ", chess.getX(), " ，Y：", chess.getY());
 
-        chess.invalidate();
+        }
+        LogUtil.args_2("ggg", "X： ", chess.getX(), " ，Y：", chess.getY());*/
+
+        if (newW == 0 && newH == 0){
+            for (int i = 0; i < chesslist.size(); i++) {
+                chesslist.get(i).SetPlayerPosition(i * 3, i * 3, multiple);
+                chesslist.get(i).invalidate();
+            }
+        }else {
+            for (int i = 0; i < chesslist.size(); i++) {
+                chesslist.get(i).SetPlayerPosition(GetPosition(chesslist.get(i).getNewW()), GetPosition(chesslist.get(i).getNewH()), multiple);
+                chesslist.get(i).invalidate();
+            }
+        }
+
 
         handler = new Handler();
         handler.postDelayed(runnable, 200);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.messageRL:
-                SetZoom(mapview, playerview, 1f);
-                multiple = 1;
-                break;
-            case R.id.messageLV:
-                SetZoom(mapview, playerview, 8f);
-                multiple = 8;
-                break;
+    public int getWitchChess(){
+
+        Cursor cursor = getCursor(SQLiteValue.Query_Chess_Name, null);
+        Log.d("qqq", "正在进入查询: ");
+        while (cursor.moveToNext()){
+            Log.d("qqq", "进入cursor: ");
+            name = cursor.getInt(1);
+            Log.d("qqq", "正在查询: "+name);
         }
+        cursor.close();
+        return name;
     }
 
     @Override
@@ -167,8 +211,26 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
                 switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
+                    case MotionEvent.ACTION_DOWN:
+
+                        Cursor cursor = getDB().rawQuery(SQLiteValue.Query_Chess_Name, null);
+                        while (cursor.moveToNext()) {
+                            moving = cursor.getInt(2);
+                        }
+                        cursor.close();
+
+                        if (moving == 0){
+
+                        }else {
+                            chessList.get(getWitchChess()).setMoving(false);
+                            chessList.get(getWitchChess()).setComplete(false);
+                            LogUtil.args_2("xxx", "（在map按down时）   是否完成： ", chessList.get(getWitchChess()).isComplete(), "， 是否移动： ", chessList.get(getWitchChess()).isMoving());
+                        }
+                        break;
+
 
                     case MotionEvent.ACTION_UP:
+
 
                         /*ToastUtil.args_4(Maps.this,
                                 "", ToastUtil.X_Y("点击", motionEvent.getX(), motionEvent.getY()),
@@ -176,35 +238,38 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                                 "倍数:   ", multiple,
                                 "该位置参数:   ", maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1]);*/
 
-                        if (!chessView.isMoving() && !chessView.isComplete()) {
+                        LogUtil.args_2("xxx", "（在map准备按up时）   是否完成： ", chessList.get(getWitchChess()).isComplete(), "， 是否移动： ", chessList.get(getWitchChess()).isMoving());
+
+                        if (!chessList.get(getWitchChess()).isMoving() && !chessList.get(getWitchChess()).isComplete() && (moving == 1)) {
                             newW = motionEvent.getX();
                             newH = motionEvent.getY();
                             if (newW == 0 && newH == 0){
-                                chessView.setOldW(5 * 15);
-                                chessView.setOldH(6 * 15);
+                                chessList.get(getWitchChess()).setOldW(5 * 15);
+                                chessList.get(getWitchChess()).setOldH(6 * 15);
                             }
-                            rad = getRad((GetPosition(newW) - ((GetPosition(chessView.getOldW()) - 1))), ((GetPosition(chessView.getOldH())) - (GetPosition(newH))));
+                            rad = getRad((GetPosition(newW) - ((GetPosition(chessList.get(getWitchChess()).getOldW()) - 1))), ((GetPosition(chessList.get(getWitchChess()).getOldH())) - (GetPosition(newH))));
 
-                            LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessView.getOldW()) - 1)," , 原Y： ", GetPosition(chessView.getOldH()),
+                            LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessList.get(getWitchChess()).getOldW()) - 1)," , 原Y： ", GetPosition(chessList.get(getWitchChess()).getOldH()),
                                     "\n现X：", GetPosition(newW), " , 现Y： ", GetPosition(newH));
-                            chessView.setRad(rad);
-                            chessView.SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
-                            chessView.invalidate();
-                            /*Log.d(TAG, "确认位置 :（"+newW+" , "+newH+"）, 旋转了 "+rad+" 度");
-                            Log.d(TAG, "位置增量 :（"+(newW - oldW)+" , "+(newH - oldH)+"）");
-                            timer.cancel();*/
-                            chessView.setVisibility(View.VISIBLE);
-                            chessView.setComplete(true);
+//                            chessList.get(getWitchChess()).setRad(rad);
 
+                            LogUtil.args_1("ccc", "要准备对这个棋子移动了： ", getWitchChess());
+
+                            chessList.get(getWitchChess()).SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
+                            chessList.get(getWitchChess()).invalidate();
+                            // TODO: 2017/12/12 21:20 可以写写timer的取消（虽然现在不写也没有发现什么问题）
+                            timer.cancel();
+                            chessList.get(getWitchChess()).setVisibility(View.VISIBLE);
+                            chessList.get(getWitchChess()).setComplete(true);
                             maps[GetPosition(newW) - 1][GetPosition(newH) - 1] = 1;
+
+                            UpdateDB("update test_data set Moving = ? where id = 1", new Object[]{0});
+
+                            LogUtil.args_2("xxx", "（在chess移动后）   是否完成： ", chessList.get(getWitchChess()).isComplete(), "， 是否移动： ", chessList.get(getWitchChess()).isMoving());
 
                         }else {
                             Toast.makeText(Maps.this, "请点击旗子", Toast.LENGTH_SHORT).show();
                         }
-                        break;
-
-                    case MotionEvent.ACTION_DOWN:
-                        chessView.setMoving(false);
                         break;
 
                     case MotionEvent.ACTION_POINTER_DOWN:
@@ -234,8 +299,8 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                                     LogUtil.d("xxx", "onTouch: ");
                                 }
                             }
-                        }*/
-                        break;
+                        }
+                        break;*/
                     default:
                         break;
                 }
@@ -245,12 +310,26 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     }
 
     @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.messageRL:
+                SetZoom(mapview, chessList, 1f);
+                multiple = 1;
+                break;
+            case R.id.messageLV:
+                SetZoom(mapview, chessList, 8f);
+                multiple = 8;
+                break;
+        }
+    }
+
+    @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         switch (seekBar.getId()) {
             case R.id.seekbar:
                 //滑动条放大地图1-8倍
                 multiple = 1 + 0.07f * i;
-                SetZoom(mapview, chessView, multiple);
+                SetZoom(mapview, chessList, multiple);
                 break;
         }
 
@@ -302,4 +381,35 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
             }
         }
     };
+
+    @Override
+    public SQLiteDatabase getDB() {
+        sqLiteDatabase = new DataBase(Maps.this).getWritableDatabase();
+        return sqLiteDatabase;
+    }
+
+    @Override
+    public Cursor getCursor(String sql, String[] strings) {
+        return getDB().rawQuery(sql, strings);
+    }
+
+    @Override
+    public void InsertDB(String sql, Object[] objects) {
+        getDB().execSQL(sql, objects);
+    }
+
+    @Override
+    public void UpdateDB(String sql, Object[] objects) {
+        getDB().execSQL(sql, objects);
+    }
+
+    @Override
+    public void closeCursor(Cursor cursor) {
+        cursor.close();
+    }
+
+    @Override
+    public void closeDB() {
+        getDB().close();
+    }
 }

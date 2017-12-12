@@ -13,7 +13,8 @@ import android.database.sqlite.SQLiteDatabase;
 public interface DBUtils {
     public SQLiteDatabase getDB();
     public Cursor getCursor(String sql, String[] strings);
-    public void InsertDB(String sql, String[] strings);
+    public void InsertDB(String sql, Object[] objects);
+    public void UpdateDB(String sql, Object[] objects);
     public void closeCursor(Cursor cursor);
     public void closeDB();
 }

@@ -19,10 +19,12 @@ import com.hzw.shinsangokumusou.chess.Chess;
 public class General extends Chess {
 
     public float rad = 0;
+    public int name;
 
-    public General(Context context) {
-        super(context);
+    public General(Context context, int name) {
+        super(context, name);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -129,4 +131,5 @@ public class General extends Chess {
     public void setRad(float rad) {
         this.rad = rad;
     }
+
 }
