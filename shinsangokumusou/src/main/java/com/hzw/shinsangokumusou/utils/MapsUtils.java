@@ -38,8 +38,8 @@ public class MapsUtils {
         Paint p = new Paint();
         p.setColor(Color.BLACK);
 
-        //当倍率大于3才显示网格
-        if ((MapsValue.getMap_height()/1350) >= 3){
+        //当倍率大于4才显示网格
+        if ((MapsValue.getMap_height()/1350) >= 4){
             p.setStrokeWidth(1);
             for (int i = 0; i <= 100 ; i++) {
                 canvas.drawLine(0, MapsValue.Eachmap*i, MapsValue.Map_width, MapsValue.Eachmap*i, p);

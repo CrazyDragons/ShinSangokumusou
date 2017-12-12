@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -20,6 +21,7 @@ import com.hzw.shinsangokumusou.diaplay.BaseDisplay;
 import com.hzw.shinsangokumusou.maps.allmap.HJmap;
 import com.hzw.shinsangokumusou.music.BGM;
 import com.hzw.shinsangokumusou.staticvalue.MapsValue;
+import com.hzw.shinsangokumusou.utils.IOUtils;
 import com.hzw.shinsangokumusou.utils.LogUtil;
 import com.hzw.shinsangokumusou.utils.MapsUtils;
 import com.hzw.shinsangokumusou.utils.ToastUtil;
@@ -40,6 +42,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     private General chessView;
     private Player playerview;
     private SeekBar seekBar;
+    private Button save;
     private float oldDist;
     private int TouthCnt;
     private float multiple = 1;
@@ -91,6 +94,14 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
         listView.setOnClickListener(this);
 
         BGM.playBGM(Maps.this, R.raw.music_hj_map);
+
+        save = (Button) findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IOUtils.Save_MapArray(maps, getApplicationContext());
+            }
+        });
 
     }
 
@@ -177,7 +188,6 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                             LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessView.getOldW()) - 1)," , 原Y： ", GetPosition(chessView.getOldH()),
                                     "\n现X：", GetPosition(newW), " , 现Y： ", GetPosition(newH));
                             chessView.setRad(rad);
-
                             chessView.SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
                             chessView.invalidate();
                             /*Log.d(TAG, "确认位置 :（"+newW+" , "+newH+"）, 旋转了 "+rad+" 度");
@@ -185,6 +195,8 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                             timer.cancel();*/
                             chessView.setVisibility(View.VISIBLE);
                             chessView.setComplete(true);
+
+                            maps[GetPosition(newW) - 1][GetPosition(newH) - 1] = 1;
 
                         }else {
                             Toast.makeText(Maps.this, "请点击旗子", Toast.LENGTH_SHORT).show();
