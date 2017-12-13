@@ -86,22 +86,6 @@ public abstract class Chess extends View {
 
         switch (event.getAction()) {
 
-            case MotionEvent.ACTION_UP:
-
-                if (moving == 1){
-
-                }else {
-                    oldW = getX() + 45;
-                    oldH = getY() + 30;
-
-                    Moving = true;
-                    Complete = false;
-                    LogUtil.args_1("xxx", "完成（chess按下）： ", Complete);
-                    ToastUtil.args_1(getContext(), "您按的是： ", name);
-                }
-
-                break;
-
             //按下棋子开始闪烁
             case MotionEvent.ACTION_DOWN:
 
@@ -139,6 +123,25 @@ public abstract class Chess extends View {
                         timer.schedule(timerTask, 0, 500);
                     }
 
+                }
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+                if (moving == 1){
+
+                }else {
+                    oldW = getX() + 45;
+                    oldH = getY() + 30;
+
+//                    LogUtil.args_4("ppp", "oldw: ", oldW, " oldh: ", oldH, "\ngetx:", getX(), " gety:", getY());
+                    // TODO: 2017/12/12 21:32 测试old位置
+
+                    Moving = true;
+                    Complete = false;
+                    LogUtil.args_1("xxx", "完成（chess按下）： ", Complete);
+                    ToastUtil.args_1(getContext(), "您按的是： ", name);
                 }
 
                 break;

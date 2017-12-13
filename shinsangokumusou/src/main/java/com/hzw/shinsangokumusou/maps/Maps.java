@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-import static com.hzw.shinsangokumusou.chess.Chess.getRad;
 import static com.hzw.shinsangokumusou.utils.MapsUtils.GetPosition;
 
 public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener , DBUtils{
@@ -56,7 +55,6 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     MediaPlayer mediaPlayer;
     BGM BGM = new BGM(mediaPlayer);
 
-    private float oldW, oldH, newW = 0, newH = 0;
     private Timer timer;
     boolean change = false;
     private float rad;
@@ -119,8 +117,10 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
         for (int i = 0; i < 10; i++) {
             General general = new General(this, i);
-            general.setId(i);
-            general.SetGeneralPosition(3 * i, 3 * i, multiple);
+            general.setOldW(3 * i * 15);
+            general.setOldH(3 * i * 15);
+            LogUtil.args_2("ppp", "原X: ", general.getOldW(), "\n原Y： ", general.getOldH());
+            general.SetGeneralPosition(GetPosition(general.getOldW()), GetPosition(general.getOldH()), multiple);
             chessList.add(general);
         }
 
@@ -172,24 +172,23 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
         }
         LogUtil.args_2("ggg", "X： ", chess.getX(), " ，Y：", chess.getY());*/
 
-        if (newW == 0 && newH == 0){
             for (int i = 0; i < chesslist.size(); i++) {
-                chesslist.get(i).SetPlayerPosition(i * 3, i * 3, multiple);
+                if ((chesslist.get(i).getNewW() == 0) && (chesslist.get(i).getNewH() == 0)){
+                    chesslist.get(i).SetPlayerPosition(GetPosition(chesslist.get(i).getOldW()), GetPosition(chesslist.get(i).getOldH()), multiple);
+                }else {
+                    chesslist.get(i).SetPlayerPosition(GetPosition(chesslist.get(i).getNewW()), GetPosition(chesslist.get(i).getNewH()), multiple);
+                }
                 chesslist.get(i).invalidate();
+//                LogUtil.args_2("ppp", "X: ", chesslist.get(i).getNewW(), "\nY： ", chesslist.get(i).getNewH());
             }
-        }else {
-            for (int i = 0; i < chesslist.size(); i++) {
-                chesslist.get(i).SetPlayerPosition(GetPosition(chesslist.get(i).getNewW()), GetPosition(chesslist.get(i).getNewH()), multiple);
-                chesslist.get(i).invalidate();
-            }
-        }
+
 
 
         handler = new Handler();
         handler.postDelayed(runnable, 200);
     }
 
-    public int getWitchChess(){
+    public int getWhichChess(){
 
         Cursor cursor = getCursor(SQLiteValue.Query_Chess_Name, null);
         Log.d("qqq", "正在进入查询: ");
@@ -222,9 +221,9 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                         if (moving == 0){
 
                         }else {
-                            chessList.get(getWitchChess()).setMoving(false);
-                            chessList.get(getWitchChess()).setComplete(false);
-                            LogUtil.args_2("xxx", "（在map按down时）   是否完成： ", chessList.get(getWitchChess()).isComplete(), "， 是否移动： ", chessList.get(getWitchChess()).isMoving());
+                            chessList.get(getWhichChess()).setMoving(false);
+                            chessList.get(getWhichChess()).setComplete(false);
+                            LogUtil.args_2("xxx", "（在map按down时）   是否完成： ", chessList.get(getWhichChess()).isComplete(), "， 是否移动： ", chessList.get(getWhichChess()).isMoving());
                         }
                         break;
 
@@ -238,34 +237,34 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                                 "倍数:   ", multiple,
                                 "该位置参数:   ", maps[GetPosition(motionEvent.getX()) - 1][GetPosition(motionEvent.getY()) - 1]);*/
 
-                        LogUtil.args_2("xxx", "（在map准备按up时）   是否完成： ", chessList.get(getWitchChess()).isComplete(), "， 是否移动： ", chessList.get(getWitchChess()).isMoving());
+                        LogUtil.args_2("xxx", "（在map准备按up时）   是否完成： ", chessList.get(getWhichChess()).isComplete(), "， 是否移动： ", chessList.get(getWhichChess()).isMoving());
 
-                        if (!chessList.get(getWitchChess()).isMoving() && !chessList.get(getWitchChess()).isComplete() && (moving == 1)) {
-                            newW = motionEvent.getX();
-                            newH = motionEvent.getY();
-                            if (newW == 0 && newH == 0){
-                                chessList.get(getWitchChess()).setOldW(5 * 15);
-                                chessList.get(getWitchChess()).setOldH(6 * 15);
-                            }
-                            rad = getRad((GetPosition(newW) - ((GetPosition(chessList.get(getWitchChess()).getOldW()) - 1))), ((GetPosition(chessList.get(getWitchChess()).getOldH())) - (GetPosition(newH))));
+                        if (!chessList.get(getWhichChess()).isMoving() && !chessList.get(getWhichChess()).isComplete() && (moving == 1)) {
+                            chessList.get(getWhichChess()).setNewW(motionEvent.getX());
+                            chessList.get(getWhichChess()).setNewH(motionEvent.getY());
+                           /* if (newW == 0 && newH == 0){
+                                chessList.get(getWhichChess()).setOldW(5 * 15);
+                                chessList.get(getWhichChess()).setOldH(6 * 15);
+                            }*/
+//                            rad = getRad((GetPosition(newW) - ((GetPosition(chessList.get(getWhichChess()).getOldW()) - 1))), ((GetPosition(chessList.get(getWhichChess()).getOldH())) - (GetPosition(newH))));
 
-                            LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessList.get(getWitchChess()).getOldW()) - 1)," , 原Y： ", GetPosition(chessList.get(getWitchChess()).getOldH()),
-                                    "\n现X：", GetPosition(newW), " , 现Y： ", GetPosition(newH));
-//                            chessList.get(getWitchChess()).setRad(rad);
+                            LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessList.get(getWhichChess()).getOldW()) - 1)," , 原Y： ", GetPosition(chessList.get(getWhichChess()).getOldH()),
+                                    "\n现X：", GetPosition(chessList.get(getWhichChess()).getOldH()), " , 现Y： ", GetPosition(chessList.get(getWhichChess()).getNewH()));
+//                            chessList.get(getWhichChess()).setRad(rad);
 
-                            LogUtil.args_1("ccc", "要准备对这个棋子移动了： ", getWitchChess());
+                            LogUtil.args_1("ccc", "要准备对这个棋子移动了： ", getWhichChess());
 
-                            chessList.get(getWitchChess()).SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
-                            chessList.get(getWitchChess()).invalidate();
+                            chessList.get(getWhichChess()).SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
+                            chessList.get(getWhichChess()).invalidate();
                             // TODO: 2017/12/12 21:20 可以写写timer的取消（虽然现在不写也没有发现什么问题）
-                            timer.cancel();
-                            chessList.get(getWitchChess()).setVisibility(View.VISIBLE);
-                            chessList.get(getWitchChess()).setComplete(true);
-                            maps[GetPosition(newW) - 1][GetPosition(newH) - 1] = 1;
+//                            timer.cancel();
+                            chessList.get(getWhichChess()).setVisibility(View.VISIBLE);
+                            chessList.get(getWhichChess()).setComplete(true);
+//                            maps[GetPosition(newW) - 1][GetPosition(newH) - 1] = 1;
 
                             UpdateDB("update test_data set Moving = ? where id = 1", new Object[]{0});
 
-                            LogUtil.args_2("xxx", "（在chess移动后）   是否完成： ", chessList.get(getWitchChess()).isComplete(), "， 是否移动： ", chessList.get(getWitchChess()).isMoving());
+                            LogUtil.args_2("xxx", "（在chess移动后）   是否完成： ", chessList.get(getWhichChess()).isComplete(), "， 是否移动： ", chessList.get(getWhichChess()).isMoving());
 
                         }else {
                             Toast.makeText(Maps.this, "请点击旗子", Toast.LENGTH_SHORT).show();
