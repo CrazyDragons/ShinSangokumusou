@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import static com.hzw.shinsangokumusou.chess.Chess.getRad;
 import static com.hzw.shinsangokumusou.utils.MapsUtils.GetPosition;
 
 public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener , DBUtils{
@@ -58,7 +59,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     private Timer timer;
     boolean change = false;
     private float rad;
-    private List<Chess> chessList;
+    private List<General> chessList;
     private SQLiteDatabase sqLiteDatabase;
     private int name = 0;
     private int moving = 0;
@@ -111,9 +112,9 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
     }
 
-    public List<Chess> getChessList(){
+    public List<General> getChessList(){
 
-        ArrayList<Chess> chessList = new ArrayList<>();
+        ArrayList<General> chessList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             General general = new General(this, i);
@@ -146,7 +147,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
      * @param chess    棋
      * @param multiple 倍率
      */
-    public void SetZoom(HJmap mapview,  List<Chess> chesslist, float multiple) {
+    public void SetZoom(HJmap mapview,  List<General> chesslist, float multiple) {
 
         /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
         MapsValue.setMap_width((int) (1080 * multiple));
@@ -246,11 +247,11 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                                 chessList.get(getWhichChess()).setOldW(5 * 15);
                                 chessList.get(getWhichChess()).setOldH(6 * 15);
                             }*/
-//                            rad = getRad((GetPosition(newW) - ((GetPosition(chessList.get(getWhichChess()).getOldW()) - 1))), ((GetPosition(chessList.get(getWhichChess()).getOldH())) - (GetPosition(newH))));
+                            rad = getRad((GetPosition(chessList.get(getWhichChess()).getNewW()) - ((GetPosition(chessList.get(getWhichChess()).getOldW()) - 1))), ((GetPosition(chessList.get(getWhichChess()).getOldH())) - (GetPosition(chessList.get(getWhichChess()).getNewH()))));
 
                             LogUtil.args_5("rrr", "角度: ", rad, "\n原X：", (GetPosition(chessList.get(getWhichChess()).getOldW()) - 1)," , 原Y： ", GetPosition(chessList.get(getWhichChess()).getOldH()),
-                                    "\n现X：", GetPosition(chessList.get(getWhichChess()).getOldH()), " , 现Y： ", GetPosition(chessList.get(getWhichChess()).getNewH()));
-//                            chessList.get(getWhichChess()).setRad(rad);
+                                    "\n现X：", GetPosition(chessList.get(getWhichChess()).getNewW()), " , 现Y： ", GetPosition(chessList.get(getWhichChess()).getNewH()));
+                            chessList.get(getWhichChess()).setRad(rad);
 
                             LogUtil.args_1("ccc", "要准备对这个棋子移动了： ", getWhichChess());
 
