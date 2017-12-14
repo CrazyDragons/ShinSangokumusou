@@ -56,10 +56,9 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     MediaPlayer mediaPlayer;
     BGM BGM = new BGM(mediaPlayer);
 
-    private Timer timer;
     boolean change = false;
     private float rad;
-    private List<General> chessList;
+    private List<Chess> chessList;
     private SQLiteDatabase sqLiteDatabase;
     private int name = 0;
     private int moving = 0;
@@ -112,9 +111,9 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
     }
 
-    public List<General> getChessList(){
+    public List<Chess> getChessList(){
 
-        ArrayList<General> chessList = new ArrayList<>();
+        ArrayList<Chess> chessList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             General general = new General(this, i);
@@ -125,11 +124,19 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
             chessList.add(general);
         }
 
+        for (int i = 10; i < 15; i++) {
+            Player player = new Player(this, i);
+            player.setOldW(3 * i * 15);
+            player.setOldH(3 * i * 15);
+            player.SetGeneralPosition(GetPosition(player.getOldW()), GetPosition(player.getOldH()), multiple);
+            chessList.add(player);
+        }
+
         Cursor cursor = getCursor(SQLiteValue.Query_Count_Chess, null);
         while (cursor.moveToNext()){
             int count = cursor.getInt(0);
             if (count == 0){
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 15; i++) {
                     InsertDB(SQLiteValue.Insert_Chess, new Object[]{null, i+"", 0, 1});
                 }
             }
@@ -147,7 +154,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
      * @param chess    棋
      * @param multiple 倍率
      */
-    public void SetZoom(HJmap mapview,  List<General> chesslist, float multiple) {
+    public void SetZoom(HJmap mapview,  List<Chess> chesslist, float multiple) {
 
         /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
         MapsValue.setMap_width((int) (1080 * multiple));
@@ -258,7 +265,7 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
                             chessList.get(getWhichChess()).SetGeneralPosition(GetPosition(motionEvent.getX()), GetPosition(motionEvent.getY()), multiple);
                             chessList.get(getWhichChess()).invalidate();
                             // TODO: 2017/12/12 21:20 可以写写timer的取消（虽然现在不写也没有发现什么问题）
-//                            timer.cancel();
+                            chessList.get(getWhichChess()).getTimer().cancel();
                             chessList.get(getWhichChess()).setVisibility(View.VISIBLE);
                             chessList.get(getWhichChess()).setComplete(true);
 //                            maps[GetPosition(newW) - 1][GetPosition(newH) - 1] = 1;

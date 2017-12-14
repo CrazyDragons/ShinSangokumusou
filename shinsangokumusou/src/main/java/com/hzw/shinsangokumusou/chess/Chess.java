@@ -274,4 +274,6 @@ public abstract class Chess extends View {
             }
         }
     };
+
+    public abstract void setRad(float rad);
 }
