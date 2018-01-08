@@ -25,12 +25,11 @@
         <ListView
             android:id="@+id/listview_map"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp"
             android:layout_weight="0.3"
             android:layout_width="0dp"
+            android:layout_marginBottom="15dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
         </ListView>
 
         <RelativeLayout
@@ -43,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="60dp"
                 android:text="三国之战"
                 android:textColor="#5e5e5e"
                 android:textSize="25sp"
@@ -111,18 +110,19 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <RadioGroup
+                android:id="@+id/select_AB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp">
 
                 <RadioButton
-                    android:layout_marginTop="20dp"
                     android:id="@+id/select_A"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -140,15 +140,14 @@
 
             <Button
                 android:id="@+id/map_ok"
-                android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginBottom="15dp"
+                android:layout_below="@id/select_AB"
+                android:layout_marginTop="30dp"
                 android:background="@android:color/holo_green_light"
                 android:text="确认"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

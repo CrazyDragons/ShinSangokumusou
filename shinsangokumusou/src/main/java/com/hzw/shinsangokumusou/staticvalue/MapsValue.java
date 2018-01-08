@@ -37,11 +37,11 @@ public class MapsValue {
      */
 
     //地图宽度
-    public static int Map_width = 1080;
+    public static int Map_width = 1440;
     //地图高度
-    public static int Map_height = 1350;
+    public static int Map_height = 1800;
     //方格大小
-    public static int Eachmap = 15;
+    public static int Eachmap = 20;
     //最大宽度格数（X轴）
     public static int MAX_X = 72;
     //最大宽度格数（Y轴）

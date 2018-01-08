@@ -35,44 +35,44 @@ public class Player extends Chess {
         paint.setColor(getResources().getColor(R.color.player_color));
         paint.setStyle(Paint.Style.FILL);
         if (rad == 0){
-            path.moveTo(7.5f, 45);
-            path.lineTo(22.5f, 0);
-            path.lineTo(37.5f, 45);
+            path.moveTo(10f, 60);
+            path.lineTo(30f, 0);
+            path.lineTo(50f, 60);
             path.close();
         }else if (rad == 90){
-            path.moveTo(0, 7.5f);
-            path.lineTo(45, 22.5f);
-            path.lineTo(0, 37.5f);
+            path.moveTo(0, 10f);
+            path.lineTo(60, 30f);
+            path.lineTo(0, 50f);
             path.close();
         }else if (rad == 180){
-            path.moveTo(7.5f, 0);
-            path.lineTo(22.5f, 45);
-            path.lineTo(37.5f, 0);
+            path.moveTo(10f, 0);
+            path.lineTo(30f, 60);
+            path.lineTo(50f, 0);
             path.close();
         }else if (rad == 270){
-            path.moveTo(0, 22.5f);
-            path.lineTo(45, 37.5f);
-            path.lineTo(45, 7.5f);
+            path.moveTo(0, 30f);
+            path.lineTo(60, 50f);
+            path.lineTo(60, 10f);
             path.close();
         }else if (rad == 45){
-            path.moveTo(0, 23.8f);
-            path.lineTo(45, 0);
-            path.lineTo(21.2f, 45);
+            path.moveTo(0, 31.7f);
+            path.lineTo(60, 0);
+            path.lineTo(28.3f, 60);
             path.close();
         }else if (rad == 135){
-            path.moveTo(0, 21.2f);
-            path.lineTo(21.2f, 0);
-            path.lineTo(45, 45  );
+            path.moveTo(0, 28.3f);
+            path.lineTo(28.3f, 0);
+            path.lineTo(60, 60  );
             path.close();
         }else if (rad == 225){
-            path.moveTo(0, 45);
-            path.lineTo(23.8f, 0);
-            path.lineTo(45, 21.2f);
+            path.moveTo(0, 60);
+            path.lineTo(31.7f, 0);
+            path.lineTo(60, 28.3f);
             path.close();
         }else if (rad == 315){
             path.moveTo(0, 0);
-            path.lineTo(23.8f, 45);
-            path.lineTo(45, 23.8f);
+            path.lineTo(31.7f, 60);
+            path.lineTo(60, 31.7f);
             path.close();
         }
         canvas.drawPath(path, paint);
@@ -81,7 +81,7 @@ public class Player extends Chess {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(45, 45);
+        setMeasuredDimension(60, 60);
     }
 
     public void setRad(float rad) {

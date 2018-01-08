@@ -117,8 +117,8 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
         for (int i = 0; i < 10; i++) {
             General general = new General(this, i);
-            general.setOldW(3 * i * 15);
-            general.setOldH(3 * i * 15);
+            general.setOldW(3 * i * 20);
+            general.setOldH(3 * i * 20);
             LogUtil.args_2("ppp", "原X: ", general.getOldW(), "\n原Y： ", general.getOldH());
             general.SetGeneralPosition(GetPosition(general.getOldW()), GetPosition(general.getOldH()), multiple);
             chessList.add(general);
@@ -126,8 +126,8 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
 
         for (int i = 10; i < 15; i++) {
             Player player = new Player(this, i);
-            player.setOldW(3 * i * 15);
-            player.setOldH(3 * i * 15);
+            player.setOldW(3 * i * 20);
+            player.setOldH(3 * i * 20);
             player.SetGeneralPosition(GetPosition(player.getOldW()), GetPosition(player.getOldH()), multiple);
             chessList.add(player);
         }
@@ -157,8 +157,8 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
     public void SetZoom(HJmap mapview,  List<Chess> chesslist, float multiple) {
 
         /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
-        MapsValue.setMap_width((int) (1080 * multiple));
-        MapsValue.setMap_height((int) (1350 * multiple));
+        MapsValue.setMap_width((int) (1440 * multiple));
+        MapsValue.setMap_height((int) (1800 * multiple));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 (int) (MapsValue.getMap_width()),
                 (int) (MapsValue.getMap_height()));
@@ -383,8 +383,8 @@ public class Maps extends BaseDisplay implements View.OnTouchListener, SeekBar.O
             //每次缩放视图置于屏幕中心
             if (multiple != 1) {
                 /******* 注意：这里一定不要把1080， 1350替换成MapsValue.getMap_width()，MapsValue.getMap_height()*******/
-                scrollView.scrollTo(0, (int) (1350 * multiple * 0.5 * (1 - 1 / multiple)));
-                horizontalScrollView.scrollTo((int) (1080 * multiple * 0.5 * (1 - 1 / multiple)), 0);
+                scrollView.scrollTo(0, (int) (1800 * multiple * 0.5 * (1 - 1 / multiple)));
+                horizontalScrollView.scrollTo((int) (1440 * multiple * 0.5 * (1 - 1 / multiple)), 0);
             }
         }
     };

@@ -103,7 +103,7 @@ public class MapsUtils {
      * @return 棋盘位置（单轴）
      */
     public static int GetPosition(float position) {
-        return (int) Math.ceil(position / 15);
+        return (int) Math.ceil(position / MapsValue.Eachmap);
     }
 
     /**

@@ -34,84 +34,84 @@ public class General extends Chess {
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
         if (rad == 0){
-            path.moveTo(0, 15);
-            path.lineTo(15, 15);
-            path.lineTo(15, 0);
-            path.lineTo(30, 0);
-            path.lineTo(30, 15);
-            path.lineTo(45, 15);
-            path.lineTo(45, 30);
-            path.lineTo(0, 30);
+            path.moveTo(0, 20);
+            path.lineTo(20, 20);
+            path.lineTo(20, 0);
+            path.lineTo(40, 0);
+            path.lineTo(40, 20);
+            path.lineTo(60, 20);
+            path.lineTo(60, 40);
+            path.lineTo(0, 40);
             path.close();
         }else if (rad == 90){
-            path.moveTo(15, 0);
-            path.lineTo(30, 0);
-            path.lineTo(30, 15);
-            path.lineTo(45, 15);
-            path.lineTo(45, 30);
-            path.lineTo(30, 30);
-            path.lineTo(30, 45);
-            path.lineTo(15, 45);
+            path.moveTo(20, 0);
+            path.lineTo(40, 0);
+            path.lineTo(40, 20);
+            path.lineTo(60, 20);
+            path.lineTo(60, 40);
+            path.lineTo(40, 40);
+            path.lineTo(40, 60);
+            path.lineTo(20, 60);
             path.close();
         }else if (rad == 180){
-            path.moveTo(0, 15);
-            path.lineTo(45, 15);
-            path.lineTo(45, 30);
-            path.lineTo(30, 30);
-            path.lineTo(30, 45);
-            path.lineTo(15, 45);
-            path.lineTo(15, 30);
-            path.lineTo(0, 30);
+            path.moveTo(0, 20);
+            path.lineTo(60, 20);
+            path.lineTo(60, 40);
+            path.lineTo(40, 40);
+            path.lineTo(40, 60);
+            path.lineTo(20, 60);
+            path.lineTo(20, 40);
+            path.lineTo(0, 40);
             path.close();
         }else if (rad == 270){
-            path.moveTo(0, 15);
-            path.lineTo(15, 15);
-            path.lineTo(15, 0);
-            path.lineTo(30, 0);
-            path.lineTo(30, 45);
-            path.lineTo(15, 45);
-            path.lineTo(15, 30);
-            path.lineTo(0, 30);
+            path.moveTo(0, 20);
+            path.lineTo(20, 20);
+            path.lineTo(20, 0);
+            path.lineTo(40, 0);
+            path.lineTo(40, 60);
+            path.lineTo(20, 60);
+            path.lineTo(20, 40);
+            path.lineTo(0, 40);
             path.close();
         }else if (rad == 45){
-            path.moveTo(0, 10.6f);
-            path.lineTo(10.6f, 0);
-            path.lineTo(22.5f, 11.9f);
-            path.lineTo(34.4f, 0);
-            path.lineTo(45, 10.6f);
-            path.lineTo(33.1f, 22.5f);
-            path.lineTo(45, 34.4f);
-            path.lineTo(34.4f, 45);
+            path.moveTo(0, 14.1f);
+            path.lineTo(14.1f, 0);
+            path.lineTo(30, 15.9f);
+            path.lineTo(45.9f, 0);
+            path.lineTo(60, 14.1f);
+            path.lineTo(44.1f, 30);
+            path.lineTo(60, 45.9f);
+            path.lineTo(45.9f, 60);
             path.close();
         }else if (rad == 135){
-            path.moveTo(0, 34.4f);
-            path.lineTo(34.4f, 0);
-            path.lineTo(45, 10.6f);
-            path.lineTo(33.1f, 22.5f);
-            path.lineTo(45, 34.4f);
-            path.lineTo(34.4f, 45);
-            path.lineTo(22.5f, 33.1f);
-            path.lineTo(10.6f, 45);
+            path.moveTo(0, 45.9f);
+            path.lineTo(45.9f, 0);
+            path.lineTo(60, 14.1f);
+            path.lineTo(44.1f, 30);
+            path.lineTo(60, 45.9f);
+            path.lineTo(45.9f, 60);
+            path.lineTo(30, 44.1f);
+            path.lineTo(14.1f, 60);
             path.close();
         }else if (rad == 225){
-            path.moveTo(0, 34.4f);
-            path.lineTo(11.9f, 22.5f);
-            path.lineTo(0, 10.6f);
-            path.lineTo(10.6f, 0);
-            path.lineTo(45, 34.4f);
-            path.lineTo(34.4f, 45);
-            path.lineTo(22.5f, 33.1f);
-            path.lineTo(10.6f, 45);
+            path.moveTo(0, 45.9f);
+            path.lineTo(15.9f, 30);
+            path.lineTo(0, 14.1f);
+            path.lineTo(14.1f, 0);
+            path.lineTo(60, 45.9f);
+            path.lineTo(45.9f, 60);
+            path.lineTo(30, 44.1f);
+            path.lineTo(14.1f, 60);
             path.close();
         }else if (rad == 315){
-            path.moveTo(0, 10.6f);
-            path.lineTo(10.6f, 0);
-            path.lineTo(22.5f, 11.9f);
-            path.lineTo(34.4f, 0);
-            path.lineTo(45, 10.6f);
-            path.lineTo(10.6f, 45);
-            path.lineTo(0, 34.4f);
-            path.lineTo(11.9f, 22.5f);
+            path.moveTo(0, 14.1f);
+            path.lineTo(14.1f, 0);
+            path.lineTo(30, 15.9f);
+            path.lineTo(45.9f, 0);
+            path.lineTo(60, 14.1f);
+            path.lineTo(14.1f, 60);
+            path.lineTo(0, 45.9f);
+            path.lineTo(15.9f, 30);
             path.close();
         }
 
@@ -121,7 +121,7 @@ public class General extends Chess {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(45, 45);
+        setMeasuredDimension(60, 60);
     }
 
     public float getRad() {

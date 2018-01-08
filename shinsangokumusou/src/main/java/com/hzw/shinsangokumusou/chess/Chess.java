@@ -132,8 +132,8 @@ public abstract class Chess extends View {
                 if (moving == 1){
 
                 }else {
-                    oldW = getX() + 45;
-                    oldH = getY() + 30;
+                    oldW = getX() + 60;
+                    oldH = getY() + 40;
 
 //                    LogUtil.args_4("ppp", "oldw: ", oldW, " oldh: ", oldH, "\ngetx:", getX(), " gety:", getY());
                     // TODO: 2017/12/12 21:32 测试old位置
