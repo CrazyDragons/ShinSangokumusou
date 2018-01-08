@@ -7,6 +7,7 @@ import android.graphics.Path;
 
 import com.hzw.shinsangokumusou.R;
 import com.hzw.shinsangokumusou.chess.Chess;
+import com.hzw.shinsangokumusou.staticvalue.MapsValue;
 
 /**
  * 玩家棋绘制
@@ -35,44 +36,44 @@ public class Player extends Chess {
         paint.setColor(getResources().getColor(R.color.player_color));
         paint.setStyle(Paint.Style.FILL);
         if (rad == 0){
-            path.moveTo(10f, 60);
-            path.lineTo(30f, 0);
-            path.lineTo(50f, 60);
+            path.moveTo(0.5f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(1.5f * MapsValue.Eachmap, 0);
+            path.lineTo(2.5f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 90){
-            path.moveTo(0, 10f);
-            path.lineTo(60, 30f);
-            path.lineTo(0, 50f);
+            path.moveTo(0, 0.5f * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 1.5f * MapsValue.Eachmap);
+            path.lineTo(0, 2.5f * MapsValue.Eachmap);
             path.close();
         }else if (rad == 180){
-            path.moveTo(10f, 0);
-            path.lineTo(30f, 60);
-            path.lineTo(50f, 0);
+            path.moveTo(0.5f * MapsValue.Eachmap, 0);
+            path.lineTo(1.5f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(2.5f * MapsValue.Eachmap, 0);
             path.close();
         }else if (rad == 270){
-            path.moveTo(0, 30f);
-            path.lineTo(60, 50f);
-            path.lineTo(60, 10f);
+            path.moveTo(0, 1.5f * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 2.5f * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 0.5f * MapsValue.Eachmap);
             path.close();
         }else if (rad == 45){
-            path.moveTo(0, 31.7f);
-            path.lineTo(60, 0);
-            path.lineTo(28.3f, 60);
+            path.moveTo(0, 1.585f * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 0);
+            path.lineTo(1.415f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 135){
-            path.moveTo(0, 28.3f);
-            path.lineTo(28.3f, 0);
-            path.lineTo(60, 60  );
+            path.moveTo(0, 1.415f * MapsValue.Eachmap);
+            path.lineTo(1.415f * MapsValue.Eachmap, 0);
+            path.lineTo(3 * MapsValue.Eachmap, 3 * MapsValue.Eachmap  );
             path.close();
         }else if (rad == 225){
-            path.moveTo(0, 60);
-            path.lineTo(31.7f, 0);
-            path.lineTo(60, 28.3f);
+            path.moveTo(0, 3 * MapsValue.Eachmap);
+            path.lineTo(1.585f * MapsValue.Eachmap, 0);
+            path.lineTo(3 * MapsValue.Eachmap, 1.415f * MapsValue.Eachmap);
             path.close();
         }else if (rad == 315){
             path.moveTo(0, 0);
-            path.lineTo(31.7f, 60);
-            path.lineTo(60, 31.7f);
+            path.lineTo(1.585f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 1.585f * MapsValue.Eachmap);
             path.close();
         }
         canvas.drawPath(path, paint);
@@ -81,7 +82,7 @@ public class Player extends Chess {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(60, 60);
+        setMeasuredDimension(3 * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
     }
 
     public void setRad(float rad) {

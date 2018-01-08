@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.hzw.shinsangokumusou.chess.Chess;
+import com.hzw.shinsangokumusou.staticvalue.MapsValue;
 
 /**
  * 将领棋的绘制
@@ -34,84 +35,84 @@ public class General extends Chess {
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
         if (rad == 0){
-            path.moveTo(0, 20);
-            path.lineTo(20, 20);
-            path.lineTo(20, 0);
-            path.lineTo(40, 0);
-            path.lineTo(40, 20);
-            path.lineTo(60, 20);
-            path.lineTo(60, 40);
-            path.lineTo(0, 40);
+            path.moveTo(0, MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 0);
+            path.lineTo(2 * MapsValue.Eachmap, 0);
+            path.lineTo(2 * MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(0, 2 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 90){
-            path.moveTo(20, 0);
-            path.lineTo(40, 0);
-            path.lineTo(40, 20);
-            path.lineTo(60, 20);
-            path.lineTo(60, 40);
-            path.lineTo(40, 40);
-            path.lineTo(40, 60);
-            path.lineTo(20, 60);
+            path.moveTo(MapsValue.Eachmap, 0);
+            path.lineTo(2 * MapsValue.Eachmap, 0);
+            path.lineTo(2 * MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(2 * MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(2 * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 3 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 180){
-            path.moveTo(0, 20);
-            path.lineTo(60, 20);
-            path.lineTo(60, 40);
-            path.lineTo(40, 40);
-            path.lineTo(40, 60);
-            path.lineTo(20, 60);
-            path.lineTo(20, 40);
-            path.lineTo(0, 40);
+            path.moveTo(0, MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(2 * MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(2 * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(0, 2 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 270){
-            path.moveTo(0, 20);
-            path.lineTo(20, 20);
-            path.lineTo(20, 0);
-            path.lineTo(40, 0);
-            path.lineTo(40, 60);
-            path.lineTo(20, 60);
-            path.lineTo(20, 40);
-            path.lineTo(0, 40);
+            path.moveTo(0, MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 0);
+            path.lineTo(2 * MapsValue.Eachmap, 0);
+            path.lineTo(2 * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(MapsValue.Eachmap, 2 * MapsValue.Eachmap);
+            path.lineTo(0, 2 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 45){
-            path.moveTo(0, 14.1f);
-            path.lineTo(14.1f, 0);
-            path.lineTo(30, 15.9f);
-            path.lineTo(45.9f, 0);
-            path.lineTo(60, 14.1f);
-            path.lineTo(44.1f, 30);
-            path.lineTo(60, 45.9f);
-            path.lineTo(45.9f, 60);
+            path.moveTo(0, 0.705f * MapsValue.Eachmap);
+            path.lineTo(0.705f * MapsValue.Eachmap, 0);
+            path.lineTo(1.5f * MapsValue.Eachmap, 0.795f * MapsValue.Eachmap);
+            path.lineTo(2.295f * MapsValue.Eachmap, 0);
+            path.lineTo(3 * MapsValue.Eachmap, 0.705f * MapsValue.Eachmap);
+            path.lineTo(2.205f * MapsValue.Eachmap, 1.5f * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 2.295f * MapsValue.Eachmap);
+            path.lineTo(2.295f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 135){
-            path.moveTo(0, 45.9f);
-            path.lineTo(45.9f, 0);
-            path.lineTo(60, 14.1f);
-            path.lineTo(44.1f, 30);
-            path.lineTo(60, 45.9f);
-            path.lineTo(45.9f, 60);
-            path.lineTo(30, 44.1f);
-            path.lineTo(14.1f, 60);
+            path.moveTo(0, 2.295f * MapsValue.Eachmap);
+            path.lineTo(2.295f * MapsValue.Eachmap, 0);
+            path.lineTo(3 * MapsValue.Eachmap, 0.705f * MapsValue.Eachmap);
+            path.lineTo(2.205f * MapsValue.Eachmap, 1.5f * MapsValue.Eachmap);
+            path.lineTo(3 * MapsValue.Eachmap, 2.295f * MapsValue.Eachmap);
+            path.lineTo(2.295f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(1.5f * MapsValue.Eachmap, 2.205f * MapsValue.Eachmap);
+            path.lineTo(0.705f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 225){
-            path.moveTo(0, 45.9f);
-            path.lineTo(15.9f, 30);
-            path.lineTo(0, 14.1f);
-            path.lineTo(14.1f, 0);
-            path.lineTo(60, 45.9f);
-            path.lineTo(45.9f, 60);
-            path.lineTo(30, 44.1f);
-            path.lineTo(14.1f, 60);
+            path.moveTo(0, 2.295f * MapsValue.Eachmap);
+            path.lineTo(0.795f * MapsValue.Eachmap, 1.5f * MapsValue.Eachmap);
+            path.lineTo(0, 0.705f * MapsValue.Eachmap);
+            path.lineTo(0.705f * MapsValue.Eachmap, 0);
+            path.lineTo(3 * MapsValue.Eachmap, 2.295f * MapsValue.Eachmap);
+            path.lineTo(2.295f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(1.5f * MapsValue.Eachmap, 2.205f * MapsValue.Eachmap);
+            path.lineTo(0.705f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
             path.close();
         }else if (rad == 315){
-            path.moveTo(0, 14.1f);
-            path.lineTo(14.1f, 0);
-            path.lineTo(30, 15.9f);
-            path.lineTo(45.9f, 0);
-            path.lineTo(60, 14.1f);
-            path.lineTo(14.1f, 60);
-            path.lineTo(0, 45.9f);
-            path.lineTo(15.9f, 30);
+            path.moveTo(0, 0.705f * MapsValue.Eachmap);
+            path.lineTo(0.705f * MapsValue.Eachmap, 0);
+            path.lineTo(1.5f * MapsValue.Eachmap, 0.795f * MapsValue.Eachmap);
+            path.lineTo(2.295f * MapsValue.Eachmap, 0);
+            path.lineTo(3 * MapsValue.Eachmap, 0.705f * MapsValue.Eachmap);
+            path.lineTo(0.705f * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
+            path.lineTo(0, 2.295f * MapsValue.Eachmap);
+            path.lineTo(0.795f * MapsValue.Eachmap, 1.5f * MapsValue.Eachmap);
             path.close();
         }
 
@@ -121,7 +122,7 @@ public class General extends Chess {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(60, 60);
+        setMeasuredDimension(3 * MapsValue.Eachmap, 3 * MapsValue.Eachmap);
     }
 
     public float getRad() {
